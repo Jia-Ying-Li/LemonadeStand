@@ -2,6 +2,8 @@
 
 ## Team members
 Jay (Jaehyung) Joo, jj534
+
 Jia Ying Li, jl2725
+
 Advika Ravi Kumar, ar732
 
