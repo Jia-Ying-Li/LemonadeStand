@@ -1,0 +1,1 @@
+(* val comapre_to_ideal : string -> feedback *)

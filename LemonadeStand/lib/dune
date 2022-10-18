@@ -1,2 +1,3 @@
 (library
- (name GAME))
+ (name lemonade)
+ (public_name LemonadeStand))
