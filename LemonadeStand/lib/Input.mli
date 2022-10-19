@@ -1,14 +1,12 @@
-type input 
-
 type command =
-  | Purchase of input
+  | Purchase of string list
+  | Quit
 
 exception CommandNotFound
 (** Raised when a command does not include Purchase or Done command *)
-exception MissingParameter
+exception InvalidParameter
 (** Raised when a command does not have necessary parameter *)
-exception InvalidType
-(** Raised when a command does not have parameters with the correct type *)
+exception Empty
+(** Raised when the input string is empty *)
 
-
-(* val parse : string -> command *)
+val parse : string -> command
