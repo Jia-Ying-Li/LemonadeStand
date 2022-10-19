@@ -1,4 +1,4 @@
-type input = {ingredient: Ingredients.ingredient; amt: int}
+type input 
 
 type command =
   | Purchase of input
@@ -11,4 +11,4 @@ exception InvalidType
 (** Raised when a command does not have parameters with the correct type *)
 
 
-val parse : string -> command
+(* val parse : string -> command *)

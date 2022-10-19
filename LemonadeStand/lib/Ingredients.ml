@@ -13,7 +13,7 @@ type option = {
 }
 
 type ingredient_owned = {
-  balance : int;
+  balance : float;
   lemon : int;
   cups : int;
   sugar : int;
