@@ -9,3 +9,4 @@ val get_sugar_count : t -> int
 val buy_lemon : t -> int -> float -> t
 val buy_cup : t -> int -> float -> t
 val buy_sugar : t -> int -> float -> t
+val sell : t -> t

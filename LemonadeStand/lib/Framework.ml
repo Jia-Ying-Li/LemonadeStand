@@ -47,3 +47,15 @@ let buy_sugar state count cost =
     cup_count = state.cup_count;
     sugar_count = state.sugar_count + count;
   }
+
+let sell state =
+  let sell_count =
+    min state.cup_count (min state.lemon_count state.sugar_count)
+  in
+  {
+    days_left = state.days_left - 1;
+    wallet = state.wallet +. float_of_int (sell_count * 4);
+    lemon_count = state.lemon_count - sell_count;
+    cup_count = state.cup_count - sell_count;
+    sugar_count = state.sugar_count - sell_count;
+  }

@@ -5,7 +5,7 @@ open Input
 
 let handle_purchase state params =
   match params with
-  | [] -> Framework.init_state
+  | [] -> state
   | ingredient :: t ->
       if ingredient = "lemon" then
         Framework.buy_lemon state Ingredients.get_lemon_amt
@@ -18,12 +18,15 @@ let handle_purchase state params =
           Ingredients.get_sugar_total_cost
       else Framework.init_state
 
+let handle_sell state params = Framework.sell state
+
 let handle_input state input =
   match Input.parse input with
   | Quit ->
       print_endline "Game ended";
       Framework.init_state
   | Purchase params -> handle_purchase state params
+  | Sell params -> handle_sell state params
 
 (* let print_purchase_options purchase_options = Printf.printf "Lemon: %i\n"
    purchase_options.amt; *)
@@ -36,10 +39,6 @@ let rec play_game new_state =
   Printf.printf "Cups left: %i\n" (Framework.get_cup_count new_state);
   Printf.printf "Sugars left: %i\n" (Framework.get_sugar_count new_state);
   print_endline "";
-
-  print_endline
-    "What would you like to purchase? You can purchase either 1) lemon 2) cup \
-     3) sugar\n";
 
   print_endline "Lemon";
   Printf.printf "price: %f\n" Ingredients.get_lemon_total_cost;
@@ -55,8 +54,13 @@ let rec play_game new_state =
   Printf.printf "price: %f\n" Ingredients.get_sugar_total_cost;
   Printf.printf "amount: %i\n" Ingredients.get_sugar_amt;
   print_endline "";
-
-  print_endline "Enter in purchase <ingredient> format";
+  print_endline
+    "What would you like to purchase? You can purchase either 1) lemon 2) cup \
+     3) sugar\n";
+  print_endline "Commands:";
+  print_endline "purchase <ingredient>";
+  print_endline "sell";
+  print_endline "quit";
   print_string "> ";
 
   match read_line () with

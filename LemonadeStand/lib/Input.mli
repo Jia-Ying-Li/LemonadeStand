@@ -1,5 +1,6 @@
 type command =
   | Purchase of string list
+  | Sell of string list
   | Quit
 
 exception CommandNotFound
