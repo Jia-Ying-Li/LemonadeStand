@@ -1,6 +1,6 @@
 # 3110-project-group
 
-## Team members
+## Team Members
 Jay (Jaehyung) Joo, jj534
 
 Jia Ying Li, jl2725

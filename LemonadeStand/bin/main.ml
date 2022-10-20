@@ -20,13 +20,31 @@ let handle_purchase state params =
 
 let handle_sell state params = Framework.sell state
 
-let handle_input state input =
-  match Input.parse input with
-  | Quit ->
-      print_endline "Game ended";
-      Framework.init_state
-  | Purchase params -> handle_purchase state params
-  | Sell params -> handle_sell state params
+let rec handle_input state input =
+  try
+    match Input.parse input with
+    | Quit ->
+        print_endline "Game Ended";
+        Framework.init_state
+    | Purchase params -> handle_purchase state params
+    | Sell params -> handle_sell state params
+  with
+  | CommandNotFound -> (
+      print_endline
+        "Invalid Command, Please Input in the Format Purchase <Ingredient> ";
+      print_string "> ";
+      match read_line () with
+      | input -> handle_input state input)
+  | InvalidParameter -> (
+      print_endline "Invalid Parameter, Please Input in a Valid Ingredient";
+      print_string "> ";
+      match read_line () with
+      | input -> handle_input state input)
+  | Empty -> (
+      print_endline "Please Input a Valid Command ";
+      print_string "> ";
+      match read_line () with
+      | input -> handle_input state input)
 
 (* let print_purchase_options purchase_options = Printf.printf "Lemon: %i\n"
    purchase_options.amt; *)
