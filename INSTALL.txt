@@ -1,0 +1,4 @@
+
+Run dune build
+Run make play
+Follow instructions shown on screen to play game
