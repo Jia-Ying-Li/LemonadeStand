@@ -1,4 +1,9 @@
 
-Run dune build
-Run make play
+Open the terminal window and navigate to where this project folder is located.
+Enter the following commands into the terminal window.
+
+$ cd LemonadeStand
+$ dune build
+$ make play
+
 Follow instructions shown on screen to play game
