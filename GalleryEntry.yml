@@ -1,0 +1,24 @@
+---
+# Members of your group.
+group:
+  - name: Jay (Jaehyung) Joo
+    netid: jj534
+  - name: Advika Ravi Kumar
+    netid: ar732
+  - name: Jia Ying Li
+    netid: ar732
+# Your PM.
+pm:
+  name: Royce Koh
+  netid: rsk224
+# Set to false if you don't want your gallery entry to be public.
+publish: false
+# Pithy title
+title: "The Lemonade Stand (TLS)"
+# OK if this is a Cornell Github link, but public gallery viewers won't be able to see it.
+git-repo: "git@github.com:jay-joo-code/3110-project-group.git"
+# If you have no demo screencast, replace the url string with an empty string ""
+demo-video-url: ""
+# Write a short, attention-grabbing description of your project.
+desc: >
+  This is a simulator that allows the players to set up their own shop and sell lemonade. The players can buy and adjust the ratios of ingredients to make the perfect drink. Given a certain amount of money to start off ($30), over a 10-day period, the user must sell as much lemonade as possible to maximize profit.

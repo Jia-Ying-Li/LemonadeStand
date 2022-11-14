@@ -1,0 +1,5 @@
+# dune init project LemonadeStand
+# OCAMLPARAM: unset
+# Shared cache: disabled
+# Workspace root: /Users/advika/sem3/cs3110/3110-project-group
+# Auto-detected concurrency: 10

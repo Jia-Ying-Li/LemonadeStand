@@ -4,6 +4,8 @@ open Ingredients
 open Input
 open Customers
 
+exception GameEnded
+
 let handle_purchase state params =
   match params with
   | [] -> state
@@ -26,7 +28,7 @@ let rec handle_input state input =
     match Input.parse input with
     | Quit ->
         print_endline "Game Ended";
-        Framework.init_state
+        raise GameEnded
     | Purchase params -> handle_purchase state params
     | Sell params -> handle_sell state params
   with
