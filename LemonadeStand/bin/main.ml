@@ -2,6 +2,7 @@ open LemonadeStand
 open Framework
 open Ingredients
 open Input
+open Customers
 
 let handle_purchase state params =
   match params with
