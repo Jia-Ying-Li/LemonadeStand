@@ -4,4 +4,4 @@ type ratio
 (* Customer Responses *)
 type responses
 
-val names : string
+val generate : responses list -> int -> string list

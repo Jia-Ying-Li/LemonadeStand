@@ -95,21 +95,63 @@ let customer_respoonses s lst =
 (* Accumulator: Number of responses generated Max: Number of people who
    purchased lemonade less than 10 else 10 *)
 let rec generate lst acc =
-  let names = read_lines "./CustomerNames" in
+  let name = read_lines "./CustomerNames" in
   match (List.nth lst (Random.int (List.length lst) - 1), acc) with
   | _, 0 -> []
   | Sour, acc ->
-      (names ^ "thinks the lemonade is too sour") :: generate lst (acc - 1)
+      List.nth
+        [
+          name ^ "thinks the lemonade is too sour";
+          name ^ "thinks the lemonade could use more sugar";
+          name ^ "will not come back next time";
+        ]
+        (Random.int 2)
+      :: generate lst (acc - 1)
   | Bland, acc ->
-      (names ^ "thinks the lemonade is bland") :: generate lst (acc - 1)
+      List.nth
+        [
+          name ^ "thinks the lemonade is bland";
+          name ^ "thinks the lemonade could use more sugar";
+          name ^ "thinks the lemonade could use more squeenzed lemon";
+          name ^ "did not enjoy this lemonade";
+        ]
+        (Random.int 3)
+      :: generate lst (acc - 1)
   | JustRight, acc ->
-      (names ^ "thinks the lemonade is just right") :: generate lst (acc - 1)
+      List.nth
+        [
+          name ^ "thinks the lemonade is just right";
+          name ^ "thinks the lemonade is a perfect mixture of ingredients";
+          name ^ "loved the lemonade";
+          name ^ "enjoyed this lemonade";
+        ]
+        (Random.int 3)
+      :: generate lst (acc - 1)
   | Expensive, acc ->
-      (names ^ "thinks the lemonade is too expensive") :: generate lst (acc - 1)
+      List.nth
+        [
+          name ^ "thinks the lemonade is too expensive";
+          name ^ "thinks the lemonade is not worth the cost";
+          name ^ "thinks the lemonade could be cheaper";
+        ]
+        (Random.int 2)
+      :: generate lst (acc - 1)
   | Cheap, acc ->
-      (names ^ "thinks the lemonade is at a good price")
+      List.nth
+        [
+          name ^ "thinks the lemonade is at a good price";
+          name ^ "thinks the lemonade is well worth the cost";
+          name ^ "thinks the lemonade was a good purchase";
+        ]
+        (Random.int 2)
       :: generate lst (acc - 1)
   | JustAlright, acc ->
-      (names ^ "thinks the lemonade is just alright") :: generate lst (acc - 1)
-
-(* Future: create more varaible responses for each customer feeback *)
+      List.nth
+        [
+          name ^ "thinks the lemonade is just alright at best";
+          name ^ "thinks the lemonade is just okay";
+          name ^ "thinks the lemonade could be better";
+          name ^ "thinks the lemonade is nothing special";
+        ]
+        (Random.int 3)
+      :: generate lst (acc - 1)
