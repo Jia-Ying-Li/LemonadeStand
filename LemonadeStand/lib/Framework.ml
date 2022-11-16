@@ -59,3 +59,8 @@ let sell state =
     cup_count = state.cup_count - sell_count;
     sugar_count = state.sugar_count - sell_count;
   }
+
+let frat_party state = { state with cup_count = 0 }
+let fridge_broke state = { state with lemon_count = 0 }
+let rat_infestation state = { state with sugar_count = 0 }
+let bank_robbery state = { state with wallet = state.wallet -. 20.0 }
