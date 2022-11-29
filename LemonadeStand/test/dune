@@ -1,2 +1,4 @@
-(test
- (name main))
+(executable
+ (public_name 3110_project_group)
+ (name main)
+ (libraries ANSITerminal LemonadeStand ounit2))

@@ -62,7 +62,7 @@ let read_lines filename =
   loop () rand_count
 
 (* Let's say each lemon yields 3 tsp of lemon juice *)
-(* Sour: greater than 20% of the perfect amount of squeezed lemon and the ratio
+(* Sour: greater than 20% of the perfect amount of squeezed lemon or the ratio
    of squeezed lemon is 20% greater than that of sugar *)
 (* Bland: The ratio of squeezed lemon and sugar to water amount is less than 5*)
 (* JustRight: The ratio of squeezed lemon and suga to water is betwee n 7.5 and
@@ -71,7 +71,7 @@ let read_lines filename =
 (* Cheap: If the cost is less than $1.50 *)
 (* JustAlright: To catch all the cases*)
 
-let customer_respoonses s lst =
+let customer_responses s lst =
   let sour =
     if s.sour > 1.2 || s.sour /. s.sweet > 1.2 then Sour :: lst else lst
   in
