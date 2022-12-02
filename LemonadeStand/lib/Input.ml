@@ -5,7 +5,9 @@
 
 type command =
   | Purchase of string list
-  | Sell of string list
+  | Add of string list
+  | Serve of string list
+  (* | Sell of string list *)
   | Quit
 
 exception CommandNotFound
@@ -23,5 +25,7 @@ let parse str =
   | verb :: t ->
       if verb = "quit" then Quit
       else if verb = "purchase" then if t = [] then raise InvalidParameter else Purchase t
-      else if verb = "sell" then Sell t
+      else if verb = "add" then Add t
+      else if verb = "serve" then Serve t
+      (* else if verb = "sell" then Sell t *)
       else raise CommandNotFound

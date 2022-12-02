@@ -21,7 +21,28 @@ let handle_purchase state params =
           Ingredients.get_sugar_total_cost
       else Framework.init_state
 
+let handle_add state params =
+  match params with
+  | [] -> state
+  | ingredient :: t ->
+      if ingredient = "lemon" then
+        let () = print_string "How many? Please input an integer >  " in
+        let i = read_int () in
+        Framework.add_lemons state i
+      else if ingredient = "sugar" then
+        let () =
+          print_string "How many tablespoons? Please input an integer >  "
+        in
+        let i = read_int () in
+        Framework.add_sugar state i
+      else if ingredient = "water" then
+        let () = print_string "How many cups? Please input an integer >  " in
+        let i = read_int () in
+        Framework.add_water state i
+      else Framework.init_state
+
 let handle_sell state params = Framework.sell state
+let handle_serve state params = Framework.serve state
 
 let rec handle_input state input =
   try
@@ -30,7 +51,9 @@ let rec handle_input state input =
         print_endline "Game Ended";
         raise GameEnded
     | Purchase params -> handle_purchase state params
-    | Sell params -> handle_sell state params
+    | Add params -> handle_add state params
+    | Serve params -> handle_serve state params
+    (* | Sell params -> handle_sell state params *)
   with
   | CommandNotFound -> (
       print_endline
@@ -76,11 +99,21 @@ let rec play_game new_state =
   Printf.printf "amount: %i\n" Ingredients.get_sugar_amt;
   print_endline "";
   print_endline
-    "What would you like to purchase? You can purchase either 1) lemon 2) cup \
-     3) sugar\n";
+    "Would you like to purchase ingredients? You can purchase either 1) lemon \
+     2) cup 3) sugar\n";
+
+  if Framework.get_lemon_count new_state != 0 then
+    print_endline
+      "You have a customer! You can make lemonade by adding the following  \
+       ingredients 1) lemon 2) water 3) sugar. Use the add function to make \
+       the perfect concoction\n";
+  print_endline "";
+
   print_endline "Commands:";
   print_endline "purchase <ingredient>";
-  print_endline "sell";
+  print_endline "add <ingredient>";
+  print_endline "serve";
+  (* print_endline "sell"; *)
   print_endline "quit";
   print_string "> ";
 
