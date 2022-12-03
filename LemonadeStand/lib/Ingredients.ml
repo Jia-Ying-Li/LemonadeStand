@@ -1,3 +1,9 @@
+type cup_price = {
+  amt : int;
+  total_cost : float;
+  unit_price : float;
+}
+
 type price = {
   amt : float;
   total_cost : float;
@@ -6,7 +12,7 @@ type price = {
 
 type options = {
   lemon : price;
-  cup : price;
+  cup : cup_price;
   sugar : price;
 }
 
@@ -29,7 +35,7 @@ let set_bounds_water = { upper_bound = 0.75; lower_bound = 1.25; optimal = 1. }
 let purchase_options =
   {
     lemon = { amt = 10.; total_cost = 2.0; unit_price = 10.0 /. 2.0 };
-    cup = { amt = 10.; total_cost = 2.0; unit_price = 10.0 /. 2.0 };
+    cup = { amt = 10; total_cost = 2.0; unit_price = 10.0 /. 2.0 };
     sugar =
       { amt = 10.; total_cost = 2.0; unit_price = 10.0 /. 2.0 }
       (* lemon = [ { amt = 10; total_cost = 2.0; unit_price = 10.0 /. 2.0 }; {

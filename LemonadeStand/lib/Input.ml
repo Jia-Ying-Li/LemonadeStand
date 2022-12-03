@@ -30,7 +30,7 @@ let parse str =
   | verb :: t -> (
       match verb with
       | "purchase" ->
-          if t <> [ " lemon" ] && t <> [ " sugar" ] && t <> [ " cup" ] then
+          if t <> [ "lemon" ] && t <> [ "sugar" ] && t <> [ "cup" ] then
             raise CommandNotFound
           else Purchase t
       | "add" -> Add t
