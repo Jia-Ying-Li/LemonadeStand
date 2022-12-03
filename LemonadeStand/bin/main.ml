@@ -27,17 +27,17 @@ let handle_add state params =
   | ingredient :: t ->
       if ingredient = "lemon" then
         let () = print_string "How many? Please input an integer >  " in
-        let i = read_int () in
+        let i = read_float () in
         Framework.add_lemons state i
       else if ingredient = "sugar" then
         let () =
           print_string "How many tablespoons? Please input an integer >  "
         in
-        let i = read_int () in
+        let i = read_float () in
         Framework.add_sugar state i
       else if ingredient = "water" then
         let () = print_string "How many cups? Please input an integer >  " in
-        let i = read_int () in
+        let i = read_float () in
         Framework.add_water state i
       else Framework.init_state
 
@@ -84,12 +84,12 @@ let rec adjust_game new_state =
   print_endline "";
   Printf.printf "Days left: %i\n" (Framework.get_days_left new_state);
   Printf.printf "Money left: %f\n" (Framework.get_wallet new_state);
-  Printf.printf "Lemons left: %i\n" (Framework.get_lemon_count new_state);
+  Printf.printf "Lemons left: %f\n" (Framework.get_lemon_count new_state);
   Printf.printf "Cups left: %i\n" (Framework.get_cup_count new_state);
-  Printf.printf "Sugars left: %i\n" (Framework.get_sugar_count new_state);
+  Printf.printf "Sugars left: %f\n" (Framework.get_sugar_count new_state);
   print_endline "";
 
-  if Framework.get_lemon_count new_state != 0 then
+  if Framework.get_lemon_count new_state != 0. then
     print_endline
       "You have a customer! You can make lemonade by adding the following  \
        ingredients 1) lemon 2) water 3) sugar. Use the add function to make \
@@ -106,14 +106,14 @@ let rec purchase_game new_state =
   print_endline "";
   Printf.printf "Days left: %i\n" (Framework.get_days_left new_state);
   Printf.printf "Money left: %f\n" (Framework.get_wallet new_state);
-  Printf.printf "Lemons left: %i\n" (Framework.get_lemon_count new_state);
+  Printf.printf "Lemons left: %f\n" (Framework.get_lemon_count new_state);
   Printf.printf "Cups left: %i\n" (Framework.get_cup_count new_state);
-  Printf.printf "Sugars left: %i\n" (Framework.get_sugar_count new_state);
+  Printf.printf "Sugars left: %f\n" (Framework.get_sugar_count new_state);
   print_endline "";
 
   print_endline "Lemon";
   Printf.printf "price: %f\n" Ingredients.get_lemon_total_cost;
-  Printf.printf "amount: %i\n" Ingredients.get_lemon_amt;
+  Printf.printf "amount: %f\n" Ingredients.get_lemon_amt;
   print_endline "";
 
   print_endline "Cup";
@@ -123,7 +123,7 @@ let rec purchase_game new_state =
 
   print_endline "Sugar";
   Printf.printf "price: %f\n" Ingredients.get_sugar_total_cost;
-  Printf.printf "amount: %i\n" Ingredients.get_sugar_amt;
+  Printf.printf "amount: %f\n" Ingredients.get_sugar_amt;
   print_endline "";
   print_endline
     "Would you like to purchase ingredients? You can purchase either 1) lemon \

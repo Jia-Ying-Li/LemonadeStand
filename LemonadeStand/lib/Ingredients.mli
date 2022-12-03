@@ -9,8 +9,8 @@ val purchase_options : options
 val get_lemon_total_cost : float
 val get_cup_total_cost : float
 val get_sugar_total_cost : float
-val get_lemon_amt : int
+val get_lemon_amt : float
 val get_cup_amt : int
-val get_sugar_amt : int
+val get_sugar_amt : float
 val init_cup : cup_contains
 val get_cup : cup_contains
