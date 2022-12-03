@@ -1,7 +1,7 @@
 type command =
   | Purchase of string list
   | Add of string list
-  | Serve of string list
+  | Serve
   (* | Sell of string list *)
   | End
   | Quit
