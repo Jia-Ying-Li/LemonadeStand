@@ -1,5 +1,8 @@
+type stage
 type t
 
+val adjust_state : t -> t
+val start_state : t
 val init_state : t
 val get_wallet : t -> float
 val get_days_left : t -> int

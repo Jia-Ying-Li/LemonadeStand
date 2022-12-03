@@ -51,10 +51,12 @@ let pp_list pp_elt lst =
 (* Customer.ml *)
 (*****************************************************************)
 (* Fulfilling both side of OR statement for sour *)
-let ratioSourI : ratio = { sour = 5.; sweet = 0.; water = 0.5; cost = 1.5 }
+let ratioSourI = { sour = 5.; sweet = 0.; water = 0.5; cost = 1.5 }
 
 (* Short circuit of OR statement for sour *)
 let ratioSourII = { sour = 5.; sweet = 5.; water = 0.5; cost = 1.5 }
+let ratioBland = { sour = 1.; sweet = 1.; water = 2.; cost = 1.3 }
+let ratioJustRight = { sour = 1.; sweet = 1.; water = 2.; cost = 1.3 }
 
 let customer_tests =
   [
@@ -63,11 +65,15 @@ let customer_tests =
       assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list print_responses)
         [ Sour; JustAlright ]
         (customer_responses ratioSourI []) );
-    ( "Testing customer_responses, Fulfilling both side of OR statement for sour"
+    ( "Testing customer_responses, Short circuit of OR statement for sour"
     >:: fun _ ->
       assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list print_responses)
         [ Sour; JustAlright ]
         (customer_responses ratioSourII []) );
+    ( "Testing customer_responses, Bland Response" >:: fun _ ->
+      assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list print_responses)
+        [ Bland; JustAlright ]
+        (customer_responses ratioBland []) );
   ]
 
 (*****************************************************************)

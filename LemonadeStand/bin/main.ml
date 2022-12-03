@@ -43,16 +43,22 @@ let handle_add state params =
 
 let handle_sell state params = Framework.sell state
 let handle_serve state params = Framework.serve state
+let handle_adjust state = Framework.adjust_state state
 
-let rec handle_input state input =
+let rec adjust_stage state input =
+  match Input.parse input with
+  | Serve params -> handle_serve state params
+  | Add params -> handle_add state params
+  | _ -> failwith "Impossible"
+
+let rec purchase_stage state input =
   try
     match Input.parse input with
     | Quit ->
         print_endline "Game Ended";
         raise GameEnded
     | Purchase params -> handle_purchase state params
-    | Add params -> handle_add state params
-    | Serve params -> handle_serve state params
+    | _ -> failwith "Impossible"
     (* | Sell params -> handle_sell state params *)
   with
   | CommandNotFound -> (
@@ -60,22 +66,43 @@ let rec handle_input state input =
         "Invalid Command, Please Input in the Format Purchase <Ingredient> ";
       print_string "> ";
       match read_line () with
-      | input -> handle_input state input)
+      | input -> purchase_stage state input)
   | InvalidParameter -> (
       print_endline "Invalid Parameter, Please Input in a Valid Ingredient";
       print_string "> ";
       match read_line () with
-      | input -> handle_input state input)
+      | input -> purchase_stage state input)
   | Empty -> (
       print_endline "Please Input a Valid Command ";
       print_string "> ";
       match read_line () with
-      | input -> handle_input state input)
+      | input -> purchase_stage state input)
 
 (* let print_purchase_options purchase_options = Printf.printf "Lemon: %i\n"
    purchase_options.amt; *)
+let rec adjust_game new_state =
+  print_endline "";
+  Printf.printf "Days left: %i\n" (Framework.get_days_left new_state);
+  Printf.printf "Money left: %f\n" (Framework.get_wallet new_state);
+  Printf.printf "Lemons left: %i\n" (Framework.get_lemon_count new_state);
+  Printf.printf "Cups left: %i\n" (Framework.get_cup_count new_state);
+  Printf.printf "Sugars left: %i\n" (Framework.get_sugar_count new_state);
+  print_endline "";
 
-let rec play_game new_state =
+  if Framework.get_lemon_count new_state != 0 then
+    print_endline
+      "You have a customer! You can make lemonade by adding the following  \
+       ingredients 1) lemon 2) water 3) sugar. Use the add function to make \
+       the perfect concoction\n";
+  print_endline "";
+  print_endline "Commands:";
+  print_endline "[serve]";
+  print_endline "[quit]";
+  print_string "> ";
+  match read_line () with
+  | input -> adjust_game (adjust_stage new_state input)
+
+let rec purchase_game new_state =
   print_endline "";
   Printf.printf "Days left: %i\n" (Framework.get_days_left new_state);
   Printf.printf "Money left: %f\n" (Framework.get_wallet new_state);
@@ -102,32 +129,27 @@ let rec play_game new_state =
     "Would you like to purchase ingredients? You can purchase either 1) lemon \
      2) cup 3) sugar\n";
 
-  if Framework.get_lemon_count new_state != 0 then
-    print_endline
-      "You have a customer! You can make lemonade by adding the following  \
-       ingredients 1) lemon 2) water 3) sugar. Use the add function to make \
-       the perfect concoction\n";
-  print_endline "";
-
   print_endline "Commands:";
-  print_endline "purchase <ingredient>";
-  print_endline "add <ingredient>";
-  print_endline "serve";
+  print_endline "[purchase <ingredient>]";
+  print_endline "[end]";
   (* print_endline "sell"; *)
-  print_endline "quit";
+  print_endline "[quit]";
   print_string "> ";
 
   match read_line () with
-  | input -> play_game (handle_input new_state input)
+  | input -> (
+      match Input.parse input with
+      | End -> adjust_game new_state
+      | _ -> purchase_game (purchase_stage new_state input))
+(* | input -> purchase_game (handle_purchase new_state input) *)
 
-let start_game = play_game Framework.init_state
-
-let main () =
+let rec init_game state =
   print_endline "\n";
   print_endline "Welcome to the Lemonade Stand game.";
   print_endline "Enter any key to start.";
   print_string "> ";
   match read_line () with
-  | random_input -> start_game
+  | random_input -> purchase_game Framework.init_state
 
-let () = main ()
+let begin_game = init_game Framework.start_state
+(*let () = main ()*)

@@ -3,6 +3,7 @@ type command =
   | Add of string list
   | Serve of string list
   (* | Sell of string list *)
+  | End
   | Quit
 
 exception CommandNotFound
