@@ -95,63 +95,84 @@ let customer_responses s lst =
 (* Accumulator: Number of responses generated Max: Number of people who
    purchased lemonade less than 10 else 10 *)
 let rec generate lst acc =
-  let name = read_lines "./CustomerNames" in
-  match (List.nth lst (Random.int (List.length lst) - 1), acc) with
+  let name = read_lines "lib/CustomerNames.txt" in
+  match (List.nth lst (Random.int (List.length lst - 1)), acc) with
   | _, 0 -> []
   | Sour, acc ->
       List.nth
         [
-          name ^ "thinks the lemonade is too sour";
-          name ^ "thinks the lemonade could use more sugar";
-          name ^ "will not come back next time";
+          name ^ " thinks the lemonade is too sour";
+          name ^ " thinks the lemonade could use more sugar";
+          name ^ " will not come back next time";
         ]
         (Random.int 2)
       :: generate lst (acc - 1)
   | Bland, acc ->
       List.nth
         [
-          name ^ "thinks the lemonade is bland";
-          name ^ "thinks the lemonade could use more sugar";
-          name ^ "thinks the lemonade could use more squeenzed lemon";
-          name ^ "did not enjoy this lemonade";
+          name ^ " thinks the lemonade is bland";
+          name ^ " thinks the lemonade could use more sugar";
+          name ^ " thinks the lemonade could use more squeenzed lemon";
+          name ^ " did not enjoy this lemonade";
         ]
         (Random.int 3)
       :: generate lst (acc - 1)
   | JustRight, acc ->
       List.nth
         [
-          name ^ "thinks the lemonade is just right";
-          name ^ "thinks the lemonade is a perfect mixture of ingredients";
-          name ^ "loved the lemonade";
-          name ^ "enjoyed this lemonade";
+          name ^ " thinks the lemonade is just right";
+          name ^ " thinks the lemonade is the perfect mixture of ingredients";
+          name ^ " loved the lemonade";
+          name ^ " enjoyed this lemonade";
         ]
         (Random.int 3)
       :: generate lst (acc - 1)
   | Expensive, acc ->
       List.nth
         [
-          name ^ "thinks the lemonade is too expensive";
-          name ^ "thinks the lemonade is not worth the cost";
-          name ^ "thinks the lemonade could be cheaper";
+          name ^ " thinks the lemonade is too expensive";
+          name ^ " thinks the lemonade is not worth the cost";
+          name ^ " thinks the lemonade could be cheaper";
         ]
         (Random.int 2)
       :: generate lst (acc - 1)
   | Cheap, acc ->
       List.nth
         [
-          name ^ "thinks the lemonade is at a good price";
-          name ^ "thinks the lemonade is well worth the cost";
-          name ^ "thinks the lemonade was a good purchase";
+          name ^ " thinks the lemonade is at a good price";
+          name ^ " thinks the lemonade is well worth the cost";
+          name ^ " thinks the lemonade was a good purchase";
         ]
         (Random.int 2)
       :: generate lst (acc - 1)
   | JustAlright, acc ->
       List.nth
         [
-          name ^ "thinks the lemonade is just alright at best";
-          name ^ "thinks the lemonade is just okay";
-          name ^ "thinks the lemonade could be better";
-          name ^ "thinks the lemonade is nothing special";
+          name ^ " thinks the lemonade is just alright at best";
+          name ^ " thinks the lemonade is just okay";
+          name ^ " thinks the lemonade could be better";
+          name ^ " thinks the lemonade is nothing special";
         ]
         (Random.int 3)
       :: generate lst (acc - 1)
+
+(* Adapted from CS3110 Assignments *)
+let pp_list pp_elt lst =
+  let pp_elts lst =
+    let rec loop n acc = function
+      | [] -> acc
+      | [ h ] -> acc ^ pp_elt h
+      | h1 :: (h2 :: t as t') ->
+          if n = 100 then acc ^ "..." (* stop printing long list *)
+          else loop (n + 1) (acc ^ pp_elt h1 ^ "; ") t'
+    in
+    loop 0 "" lst
+  in
+  pp_elts lst
+
+let rec print_feedback lst acc =
+  match lst with
+  | [] -> ()
+  | h :: t ->
+      print_endline h;
+      print_feedback t (acc - 1)

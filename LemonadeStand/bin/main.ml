@@ -41,24 +41,38 @@ let handle_add state params =
         Framework.add_water state i
       else Framework.init_state
 
+let lst_resp = [ JustAlright; Cheap ]
+
+(* Make sure to decrement day and If typed in wrong command, next command no
+   longer works *)
 let rec handle_feedback state =
   Printf.printf "Feedback";
   print_endline "";
+
+  Customers.print_feedback (generate lst_resp 10) 10;
+  print_endline "";
+
   print_endline "Commands:";
   print_endline "[next]";
   print_endline "[quit]";
+
   print_endline "";
   print_string "> ";
 
-  match read_line () with
-  | input -> (
-      match Input.parse input with
-      | Next -> purchase_game state
-      | Quit ->
-          print_endline "Game Ended";
-          raise GameEnded
-      | _ -> raise CommandNotFound)
-
+  try
+    match read_line () with
+    | input -> (
+        match Input.parse input with
+        | Next -> purchase_game state
+        | Quit ->
+            print_endline "Game Ended";
+            raise GameEnded
+        | _ -> raise CommandNotFound)
+  with CommandNotFound -> (
+    print_endline "Invalid Command, Please Input in the correct format";
+    print_string "> ";
+    match read_line () with
+    | input -> handle_feedback state)
 (* Using the number of cups that can be made, multiply that number to the cost
    input. Using a formula, determine how many sales there will be base on the
    deviation from the optimal creation. Using the number of sale, display
@@ -91,6 +105,7 @@ and adjust_game new_state =
   print_endline "[add]";
   print_endline "[serve]";
   print_endline "[quit]";
+
   print_endline "";
   print_string "> ";
   (* Error Handling, make sure serve only works when all the inputs are done *)
@@ -114,8 +129,7 @@ and purchase_stage state input =
     (* | Sell params -> handle_sell state params *)
   with
   | CommandNotFound -> (
-      print_endline
-        "Invalid Command, Please Input in the Format Purchase <Ingredient> ";
+      print_endline "Invalid Command, Please Input in the correct format";
       print_string "> ";
       match read_line () with
       | input -> purchase_stage state input)
