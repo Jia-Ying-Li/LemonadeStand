@@ -21,22 +21,37 @@ let handle_purchase state params =
           Ingredients.get_sugar_total_cost
       else Framework.init_state
 
+let check_add state =
+  if
+    Framework.get_cup_count state = 0
+    || Framework.get_lemon_count state < 2.
+    || Framework.get_sugar_count state < 2.25
+  then false
+  else true
+
 let handle_add state params =
   match params with
   | [] -> state
   | ingredient :: t ->
       if ingredient = "lemon" then
-        let () = print_string "How many? Please input an integer >  " in
+        let () =
+          print_string "How many? Please input a value between 1 and 2 >  "
+        in
         let i = read_float () in
         Framework.add_lemons state i
       else if ingredient = "sugar" then
         let () =
-          print_string "How many tablespoons? Please input an integer >  "
+          print_string
+            "How many tablespoons? Please input an number between 1.5 and 2.25 \
+             >  "
         in
         let i = read_float () in
         Framework.add_sugar state i
       else if ingredient = "water" then
-        let () = print_string "How many cups? Please input an integer >  " in
+        let () =
+          print_string
+            "How many cups? Please input an number between 0.75 and 1.25 >  "
+        in
         let i = read_float () in
         Framework.add_water state i
       else Framework.init_state
@@ -65,7 +80,7 @@ let rec adjust_game new_state =
   Printf.printf "Sugars left: %f\n" (Framework.get_sugar_count new_state);
   print_endline "";
 
-  if Framework.get_lemon_count new_state != 0. then
+  if check_add new_state = true then
     print_endline
       "You have a customer! You can make lemonade by adding the following  \
        ingredients 1) lemon 2) water 3) sugar. Use the add function to make \
