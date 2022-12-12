@@ -4,6 +4,7 @@ type command =
   | Serve
   (* | Sell of string list *)
   | End
+  | Next
   | Quit
 
 exception CommandNotFound

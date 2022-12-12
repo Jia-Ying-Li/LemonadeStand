@@ -56,22 +56,52 @@ let handle_add state params =
         Framework.add_water state i
       else Framework.init_state
 
-let handle_feedback state =
-  print_endline "";
+let lst_resp = [ JustAlright; Cheap ]
+
+(* Make sure to decrement day and If typed in wrong command, next command no
+   longer works *)
+let rec handle_feedback state =
   Printf.printf "Feedback";
-  state
+  print_endline "";
+
+  Customers.print_feedback (generate lst_resp 10) 10;
+  print_endline "";
+
+  print_endline "Commands:";
+  print_endline "[next]";
+  print_endline "[quit]";
+
+  print_endline "";
+  print_string "> ";
+
+  try
+    match read_line () with
+    | input -> (
+        match Input.parse input with
+        | Next -> purchase_game state
+        | Quit ->
+            print_endline "Game Ended";
+            raise GameEnded
+        | _ -> raise CommandNotFound)
+  with CommandNotFound -> (
+    print_endline "Invalid Command, Please Input in the correct format";
+    print_string "> ";
+    match read_line () with
+    | input -> handle_feedback state)
+(* Using the number of cups that can be made, multiply that number to the cost
+   input. Using a formula, determine how many sales there will be base on the
+   deviation from the optimal creation. Using the number of sale, display
+   customer response *)
 
 (* let handle_sell state params = Framework.sell state *)
-let handle_serve state params = Framework.serve state
-let handle_adjust state = Framework.adjust_state state
 
-let rec adjust_stage state input =
+and adjust_stage state input =
   match Input.parse input with
   | Serve -> handle_feedback state
   | Add params -> handle_add state params
   | _ -> failwith "Impossible"
 
-let rec adjust_game new_state =
+and adjust_game new_state =
   print_endline "";
   Printf.printf "Days left: %i\n" (Framework.get_days_left new_state);
   Printf.printf "Money left: %f\n" (Framework.get_wallet new_state);
@@ -87,11 +117,13 @@ let rec adjust_game new_state =
        the perfect concoction\n";
 
   print_endline "Commands:";
+  print_endline "[add]";
   print_endline "[serve]";
   print_endline "[quit]";
+
   print_endline "";
   print_string "> ";
-
+  (* Error Handling, make sure serve only works when all the inputs are done *)
   match read_line () with
   | input -> (
       match Input.parse input with
@@ -100,7 +132,7 @@ let rec adjust_game new_state =
 (*ignore (match read_line () with | input -> adjust_game (adjust_stage new_state
   input)); new_state*)
 
-let rec purchase_stage state input =
+and purchase_stage state input =
   try
     match Input.parse input with
     | End -> adjust_game state
@@ -112,8 +144,7 @@ let rec purchase_stage state input =
     (* | Sell params -> handle_sell state params *)
   with
   | CommandNotFound -> (
-      print_endline
-        "Invalid Command, Please Input in the Format Purchase <Ingredient> ";
+      print_endline "Invalid Command, Please Input in the correct format";
       print_string "> ";
       match read_line () with
       | input -> purchase_stage state input)
@@ -131,7 +162,7 @@ let rec purchase_stage state input =
 (* let print_purchase_options purchase_options = Printf.printf "Lemon: %i\n"
    purchase_options.amt; *)
 
-let rec purchase_game new_state =
+and purchase_game new_state =
   print_endline "";
   Printf.printf "Days left: %i\n" (Framework.get_days_left new_state);
   Printf.printf "Money left: %f\n" (Framework.get_wallet new_state);

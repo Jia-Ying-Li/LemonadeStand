@@ -15,6 +15,7 @@ type command =
   | Serve
   (* | Sell of string list *)
   | End
+  | Next
   | Quit
 
 let parse str =
@@ -26,6 +27,7 @@ let parse str =
       if verb = "quit" then Quit
       else if verb = "serve" then Serve
       else if verb = "end" then End
+      else if verb = "next" then Next
       else raise CommandNotFound
   | verb :: t -> (
       match verb with
