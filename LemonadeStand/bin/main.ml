@@ -20,7 +20,6 @@ let handle_purchase state params =
       if ingredient = "lemon" then
         let () = print_string "Option 1 , 2 or 3  >  " in
         let i = read_int () in
-
         Framework.buy_lemon state
           (Ingredients.get_lemon_amt (option_helper i))
           (Ingredients.get_lemon_total_cost (option_helper i))
@@ -57,7 +56,8 @@ let handle_add state params =
              lemonade? Please input an number between 0.5 and 5.0 >  "
         in
         let i = read_float () in
-        Framework.add_lemons state i
+        if i < 0.5 || i > 5. then Framework.return_state state
+        else Framework.add_lemons state i
       else if ingredient = "sugar" then
         let () =
           print_string
@@ -65,7 +65,8 @@ let handle_add state params =
              Please input an number between 0.5 and 5.0 >  "
         in
         let i = read_float () in
-        Framework.add_sugar state i
+        if i < 0.5 || i > 5. then Framework.return_state state
+        else Framework.add_sugar state i
       else if ingredient = "water" then
         let () =
           print_string
@@ -73,7 +74,8 @@ let handle_add state params =
              Please input an number between 0.5 and 2.0 >  "
         in
         let i = read_float () in
-        Framework.add_water state i
+        if i < 0.5 || i > 2. then Framework.return_state state
+        else Framework.add_water state i
       else if ingredient = "price" then
         let () = print_string "set the price >  " in
         let i = read_float () in

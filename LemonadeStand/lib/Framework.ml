@@ -140,7 +140,7 @@ let add_lemons state count =
     price = 0.;
   }
 
-let return_state state count =
+let return_state state =
   {
     state = Adjusting;
     days_left = state.days_left;

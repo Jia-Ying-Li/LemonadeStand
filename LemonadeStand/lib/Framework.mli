@@ -41,6 +41,7 @@ val get_price : t -> float
 val next_state : t -> t
 val cup_sell : t -> float -> float -> int -> int -> int
 val profit : t -> float
+val return_state : t -> t
 
 type ratio = {
   sour : float;
