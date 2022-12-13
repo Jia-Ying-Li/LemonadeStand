@@ -6,6 +6,8 @@ open Customers
 
 exception GameEnded
 
+let round2 n = Float.round (n *. 100.) /. 100.
+
 let option_helper i =
   match i with
   | 1 -> Ingredients.purchase_option1
@@ -227,87 +229,62 @@ and purchase_game new_state =
   Printf.printf "(cups) Cups left: %i\n" (Framework.get_cup_count new_state);
   Printf.printf "(tsp) Sugars left: %f\n" (Framework.get_sugar_count new_state);
   print_endline "";
-
+  print_endline "________________________________________________";
+  print_endline "";
   print_endline "Lemon";
-  print_endline "__________________________________";
-  Printf.printf "price: %f\n"
-    (Ingredients.get_lemon_total_cost purchase_option1);
-  Printf.printf "amount: %f\n" (Ingredients.get_lemon_amt purchase_option1);
-  Printf.printf "unit price: %f\n"
-    (Ingredients.get_lemon_amt purchase_option1
-    /. Ingredients.get_lemon_total_cost purchase_option1);
-  print_endline "";
-  print_endline "__________________________________";
-  Printf.printf "price: %f\n"
-    (Ingredients.get_lemon_total_cost purchase_option2);
-  Printf.printf "amount: %f\n" (Ingredients.get_lemon_amt purchase_option2);
-  Printf.printf "unit price: %f\n"
-    (Ingredients.get_lemon_amt purchase_option2
-    /. Ingredients.get_lemon_total_cost purchase_option2);
-  print_endline "";
-  print_endline "__________________________________";
-  Printf.printf "price: %f\n"
-    (Ingredients.get_lemon_total_cost purchase_option3);
-  Printf.printf "amount: %f\n" (Ingredients.get_lemon_amt purchase_option3);
-  Printf.printf "amount: %f\n"
-    (Ingredients.get_lemon_amt purchase_option3
-    /. Ingredients.get_lemon_total_cost purchase_option3);
-  print_endline "__________________________________";
-  print_endline "";
+  print_endline "________________________________________________";
+  print_string "price: ";
+  print_float (Ingredients.get_lemon_total_cost purchase_option1);
+  print_string "        price: ";
+  print_float (Ingredients.get_lemon_total_cost purchase_option2);
+  print_string "        price: ";
+  print_float (Ingredients.get_lemon_total_cost purchase_option3);
+  print_newline ();
+  print_string "amount: ";
+  print_float (Ingredients.get_lemon_amt purchase_option1);
+  print_string "        amount: ";
+  print_float (Ingredients.get_lemon_amt purchase_option2);
+  print_string "       amount: ";
+  print_float (Ingredients.get_lemon_amt purchase_option3);
+  print_newline ();
+  print_endline "________________________________________________";
 
+  print_endline "";
   print_endline "Cup";
-  print_endline "__________________________________";
-  Printf.printf "price: %f\n"
-    (Ingredients.get_lemon_total_cost purchase_option1);
-  Printf.printf "amount: %f\n" (Ingredients.get_lemon_amt purchase_option1);
-  Printf.printf "unit price: %f\n"
-    (Ingredients.get_lemon_amt purchase_option1
-    /. Ingredients.get_lemon_total_cost purchase_option1);
+  print_endline "________________________________________________";
+  print_string "price: ";
+  print_float (Ingredients.get_cup_total_cost purchase_option1);
+  print_string "        price: ";
+  print_float (Ingredients.get_cup_total_cost purchase_option2);
+  print_string "        price: ";
+  print_float (Ingredients.get_cup_total_cost purchase_option3);
+  print_newline ();
+  print_string "amount: ";
+  print_int (Ingredients.get_cup_amt purchase_option1);
+  print_string "         amount: ";
+  print_int (Ingredients.get_cup_amt purchase_option2);
+  print_string "        amount: ";
+  print_int (Ingredients.get_cup_amt purchase_option3);
+  print_newline ();
+  print_endline "________________________________________________";
   print_endline "";
-  print_endline "__________________________________";
-  Printf.printf "price: %f\n"
-    (Ingredients.get_lemon_total_cost purchase_option2);
-  Printf.printf "amount: %f\n" (Ingredients.get_lemon_amt purchase_option2);
-  Printf.printf "unit price: %f\n"
-    (Ingredients.get_lemon_amt purchase_option2
-    /. Ingredients.get_lemon_total_cost purchase_option2);
-  print_endline "";
-  print_endline "__________________________________";
-  Printf.printf "price: %f\n"
-    (Ingredients.get_lemon_total_cost purchase_option3);
-  Printf.printf "amount: %f\n" (Ingredients.get_lemon_amt purchase_option3);
-  Printf.printf "amount: %f\n"
-    (Ingredients.get_lemon_amt purchase_option3
-    /. Ingredients.get_lemon_total_cost purchase_option3);
-  print_endline "";
-  print_endline "__________________________________";
-  print_endline "";
-
   print_endline "Sugar";
-  print_endline "__________________________________";
-  Printf.printf "price: %f\n"
-    (Ingredients.get_sugar_total_cost purchase_option1);
-  Printf.printf "amount: %f\n" (Ingredients.get_sugar_amt purchase_option1);
-  Printf.printf "unit price: %f\n"
-    (Ingredients.get_sugar_amt purchase_option1
-    /. Ingredients.get_sugar_total_cost purchase_option1);
-  print_endline "";
-  print_endline "__________________________________";
-  Printf.printf "price: %f\n"
-    (Ingredients.get_sugar_total_cost purchase_option2);
-  Printf.printf "amount: %f\n" (Ingredients.get_sugar_amt purchase_option2);
-  Printf.printf "unit price: %f\n"
-    (Ingredients.get_sugar_amt purchase_option2
-    /. Ingredients.get_sugar_total_cost purchase_option2);
-  print_endline "";
-  print_endline "__________________________________";
-  Printf.printf "price: %f\n"
-    (Ingredients.get_sugar_total_cost purchase_option3);
-  Printf.printf "amount: %f\n" (Ingredients.get_sugar_amt purchase_option3);
-  Printf.printf "amount: %f\n"
-    (Ingredients.get_sugar_amt purchase_option3
-    /. Ingredients.get_sugar_total_cost purchase_option3);
-  print_endline "__________________________________";
+  print_endline "________________________________________________";
+  print_string "price: ";
+  print_float (Ingredients.get_sugar_total_cost purchase_option1);
+  print_string "        price: ";
+  print_float (Ingredients.get_sugar_total_cost purchase_option2);
+  print_string "        price: ";
+  print_float (Ingredients.get_sugar_total_cost purchase_option3);
+  print_newline ();
+  print_string "amount: ";
+  print_float (Ingredients.get_sugar_amt purchase_option1);
+  print_string "       amount: ";
+  print_float (Ingredients.get_sugar_amt purchase_option2);
+  print_string "      amount: ";
+  print_float (Ingredients.get_sugar_amt purchase_option3);
+  print_newline ();
+  print_endline "________________________________________________";
   print_endline "";
   print_endline
     "Would you like to purchase ingredients? You can purchase either 1) lemon \
