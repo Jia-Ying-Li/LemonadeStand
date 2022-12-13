@@ -162,7 +162,7 @@ and adjust_game new_state =
     && Framework.get_cup_sugar_count new_state > 0.
   then
     print_endline
-      "set the price of your lemonade using the function [add] price"
+      "set the price of your lemonade using the function [add price]"
   else
     print_endline
       "Add ingredients to your jug of lemonade! Use the command <add \
