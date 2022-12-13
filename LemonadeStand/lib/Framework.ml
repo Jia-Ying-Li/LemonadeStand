@@ -140,6 +140,20 @@ let add_lemons state count =
     price = 0.;
   }
 
+let return_state state count =
+  {
+    state = Adjusting;
+    days_left = state.days_left;
+    wallet = state.wallet;
+    lemon_count = state.lemon_count;
+    cup_count = state.cup_count;
+    sugar_count = state.sugar_count;
+    cup_lemon = state.cup_lemon;
+    cup_sugar = state.cup_sugar;
+    cup_water = state.cup_water;
+    price = 0.;
+  }
+
 let add_sugar state count =
   {
     state = Adjusting;
