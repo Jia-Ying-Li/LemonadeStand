@@ -66,7 +66,6 @@ let get_cup_total_cost = purchase_option1.cup.total_cost
 let get_cup_amt = purchase_option1.cup.amt
 let get_sugar_total_cost = purchase_option1.sugar.total_cost
 let get_sugar_amt = purchase_option1.sugar.amt
-let init_cup = { lemon = 0.; sugar = 0.; water = 0. }
 
-let get_cup =
-  { lemon = init_cup.lemon; sugar = init_cup.sugar; water = init_cup.water }
+let set_cup (i : float) (j : float) (k : float) =
+  { lemon = i; sugar = j; water = k }

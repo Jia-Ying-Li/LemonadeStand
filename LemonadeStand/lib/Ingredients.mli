@@ -19,5 +19,4 @@ val get_sugar_total_cost : float
 val get_lemon_amt : float
 val get_cup_amt : int
 val get_sugar_amt : float
-val init_cup : cup_contains
-val get_cup : cup_contains
+val set_cup : float -> float -> float -> cup_contains
