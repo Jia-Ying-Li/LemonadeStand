@@ -43,8 +43,8 @@ type responses =
   | Cheap
   | JustAlright
 
-(* Textfile containing names, inspired by StackOverflow
-   (https://stackoverflow.com/questions/5774934/how-do-i-read-in-lines-from-a-text-file-in-ocaml) *)
+(* Inspired by StackOverflow, Author: vukung
+   https://stackoverflow.com/questions/5774934/how-do-i-read-in-lines-from-a-text-file-in-ocaml *)
 let read_lines filename =
   let rand_count = Random.int 999 in
   let f = open_in filename in
@@ -73,7 +73,7 @@ let read_lines filename =
 
 let customer_responses s lst =
   let sour =
-    if s.sour > 1.2 || s.sour /. s.sweet > 1.2 then Sour :: lst else lst
+    if s.sour > 4.25 || s.sour /. s.sweet > 1.5 then Sour :: lst else lst
   in
   let bland =
     if (s.sour +. s.sweet) /. s.water < 5. then Bland :: sour else sour
@@ -86,7 +86,8 @@ let customer_responses s lst =
     else bland
   in
   let expensive =
-    if (s.sour +. s.sweet) /. s.cost < 1.75 then Expensive :: justright
+    if ((s.sour +. s.sweet) /. s.cost < 1.75 && s.cost > 2.) || s.cost > 6. then
+      Expensive :: justright
     else justright
   in
   let cheap = if s.cost < 1.5 then Cheap :: expensive else expensive in
@@ -96,7 +97,7 @@ let customer_responses s lst =
    purchased lemonade less than 10 else 10 *)
 let rec generate lst acc =
   let name = read_lines "lib/CustomerNames.txt" in
-  match (List.nth lst (Random.int (List.length lst - 1)), acc) with
+  match (List.nth lst (Random.int (List.length lst)), acc) with
   | _, 0 -> []
   | Sour, acc ->
       List.nth
@@ -155,20 +156,6 @@ let rec generate lst acc =
         ]
         (Random.int 3)
       :: generate lst (acc - 1)
-
-(* Adapted from CS3110 Assignments *)
-let pp_list pp_elt lst =
-  let pp_elts lst =
-    let rec loop n acc = function
-      | [] -> acc
-      | [ h ] -> acc ^ pp_elt h
-      | h1 :: (h2 :: t as t') ->
-          if n = 100 then acc ^ "..." (* stop printing long list *)
-          else loop (n + 1) (acc ^ pp_elt h1 ^ "; ") t'
-    in
-    loop 0 "" lst
-  in
-  pp_elts lst
 
 let rec print_feedback lst acc =
   match lst with

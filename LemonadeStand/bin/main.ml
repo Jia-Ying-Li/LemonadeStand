@@ -56,7 +56,7 @@ let handle_add state params =
         Framework.add_water state i
       else Framework.init_state
 
-let lst_resp = [ JustAlright; Cheap ]
+let lst_resp = [ Bland; JustAlright ]
 
 (* Make sure to decrement day and If typed in wrong command, next command no
    longer works *)

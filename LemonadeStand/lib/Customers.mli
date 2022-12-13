@@ -17,5 +17,4 @@ type responses =
 
 val customer_responses : ratio -> responses list -> responses list
 val generate : responses list -> int -> string list
-val pp_list : ('a -> string) -> 'a list -> string
 val print_feedback : string list -> int -> unit

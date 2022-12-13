@@ -19,7 +19,11 @@ type command =
   | Quit
 
 let parse str =
-  let arr = List.filter (fun s -> s <> "") (String.split_on_char ' ' str) in
+  let arr =
+    List.map
+      (fun s -> String.lowercase_ascii s)
+      (List.filter (fun s -> s <> "") (String.split_on_char ' ' str))
+  in
 
   match arr with
   | [] -> raise Empty
@@ -33,8 +37,8 @@ let parse str =
       match verb with
       | "purchase" ->
           if t <> [ "lemon" ] && t <> [ "sugar" ] && t <> [ "cup" ] then
-            raise CommandNotFound
+            raise InvalidParameter
           else Purchase t
       | "add" -> Add t
-      | _ -> raise CommandNotFound)
+      | _ -> raise Empty)
 (* else if verb = "sell" then Sell t *)
