@@ -54,16 +54,27 @@ let handle_add state params =
         in
         let i = read_float () in
         Framework.add_water state i
+      else if ingredient = "price" then
+        let () = print_string "set the price >  " in
+        let i = read_float () in
+        Framework.serve state i
       else Framework.init_state
 
-let lst_resp = [ Bland; JustAlright ]
+let handle_set_price state =
+  let () = print_string "Set the price of your lemonade >   " in
+  let i = read_float () in
+  Framework.serve state i
+
+let lst_resp = [ JustAlright; Cheap ]
 
 (* Make sure to decrement day and If typed in wrong command, next command no
    longer works *)
 let rec handle_feedback state =
-  Printf.printf "Feedback";
+  print_endline
+    "==================================================================================================";
+  Printf.printf "[Feedback Stage]";
   print_endline "";
-
+  print_endline "";
   Customers.print_feedback (generate lst_resp 10) 10;
   print_endline "";
 
@@ -78,7 +89,7 @@ let rec handle_feedback state =
     match read_line () with
     | input -> (
         match Input.parse input with
-        | Next -> purchase_game state
+        | Next -> purchase_game (next_state state)
         | Quit ->
             print_endline "Game Ended";
             raise GameEnded
@@ -102,6 +113,9 @@ and adjust_stage state input =
   | _ -> failwith "Impossible"
 
 and adjust_game new_state =
+  print_endline
+    "==================================================================================================";
+  print_endline "[Adjustment Stage]";
   print_endline "";
   Printf.printf "Days left: %i\n" (Framework.get_days_left new_state);
   Printf.printf "Money left: %f\n" (Framework.get_wallet new_state);
@@ -109,13 +123,24 @@ and adjust_game new_state =
   Printf.printf "Cups left: %i\n" (Framework.get_cup_count new_state);
   Printf.printf "Sugars left: %f\n" (Framework.get_sugar_count new_state);
   print_endline "";
+  Printf.printf "Lemons per cup: %f\n" (Framework.get_cup_lemon_count new_state);
+  Printf.printf "Sugar per cup: %f\n" (Framework.get_cup_sugar_count new_state);
+  Printf.printf "Water per cup: %f\n" (Framework.get_cup_water_count new_state);
+  print_endline "";
+  Printf.printf "Price of lemonade: %f\n" (Framework.get_price new_state);
 
-  if check_add new_state = true then
+  if
+    Framework.get_cup_water_count new_state > 0.
+    && Framework.get_cup_lemon_count new_state > 0.
+    && Framework.get_cup_sugar_count new_state > 0.
+  then
     print_endline
-      "You have a customer! You can make lemonade by adding the following  \
-       ingredients 1) lemon 2) water 3) sugar. Use the add function to make \
-       the perfect concoction\n";
-
+      "set the price of your lemonade using the function [add price]"
+  else print_endline "";
+  print_endline
+    "Add ingredients to your jug of lemonade! Use the command <add \
+     [ingredient]> to add 1)lemon 2)sugar or 3)water";
+  print_endline "";
   print_endline "Commands:";
   print_endline "[add]";
   print_endline "[serve]";
@@ -127,7 +152,6 @@ and adjust_game new_state =
   match read_line () with
   | input -> (
       match Input.parse input with
-      | Serve -> handle_feedback new_state
       | _ -> adjust_game (adjust_stage new_state input))
 (*ignore (match read_line () with | input -> adjust_game (adjust_stage new_state
   input)); new_state*)
@@ -163,6 +187,10 @@ and purchase_stage state input =
    purchase_options.amt; *)
 
 and purchase_game new_state =
+  print_endline
+    "==================================================================================================";
+  print_endline "[Purchasing Stage]";
+
   print_endline "";
   Printf.printf "Days left: %i\n" (Framework.get_days_left new_state);
   Printf.printf "Money left: %f\n" (Framework.get_wallet new_state);
@@ -194,6 +222,7 @@ and purchase_game new_state =
   print_endline "[end]";
   (* print_endline "sell"; *)
   print_endline "[quit]";
+  print_endline "";
   print_string "> ";
 
   match read_line () with

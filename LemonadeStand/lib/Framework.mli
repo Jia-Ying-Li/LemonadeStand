@@ -10,9 +10,14 @@ val get_lemon_count : t -> float
 val get_cup_count : t -> int
 val get_sugar_count : t -> float
 val add_water : t -> float -> t
-val serve : t -> t
+val serve : t -> float -> t
 val buy_lemon : t -> float -> float -> t
 val buy_cup : t -> int -> float -> t
 val buy_sugar : t -> float -> float -> t
 val add_sugar : t -> float -> t
 val add_lemons : t -> float -> t
+val get_cup_sugar_count : t -> float
+val get_cup_lemon_count : t -> float
+val get_cup_water_count : t -> float
+val get_price : t -> float
+val next_state : t -> t
