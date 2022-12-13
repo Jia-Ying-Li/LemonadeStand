@@ -1,5 +1,5 @@
 open Random
-open Recipe
+open Framework
 
 (* Let's say a perfect cup of lemonade needs 4 tsp of sugar, 4 tsp of squeezed
    lemon and 1 cup of water for each cup of lemonade. Player's selected
@@ -14,26 +14,6 @@ open Recipe
    (Water): 0.5 cup - 2 cups
 
    (Cost): $0.05 - $10.00 **)
-
-type ratio = {
-  sour : float;
-  sweet : float;
-  water : float;
-  cost : float;
-}
-
-let set_lemon = 4.
-let set_sugar = 4.
-let set_water = 1.
-let set_cost = 3.
-
-let response_ratio =
-  {
-    sour = Recipe.get_lemon_input /. set_lemon;
-    sweet = Recipe.get_sugar_input /. set_sugar;
-    water = Recipe.get_water_input /. set_water;
-    cost = Recipe.get_cost_input /. set_cost;
-  }
 
 type responses =
   | Sour
@@ -71,7 +51,8 @@ let read_lines filename =
 (* Cheap: If the cost is less than $1.50 *)
 (* JustAlright: To catch all the cases*)
 
-let customer_responses s lst =
+let customer_responses state lst =
+  let s = Framework.response_ratio state in
   let sour =
     if s.sour > 4.25 || s.sour /. s.sweet > 1.5 then Sour :: lst else lst
   in

@@ -156,25 +156,77 @@ let add_sugar state count =
 
 let compare_to_optimal ingr = 0
 
-let serve state i =
-  let (sell_count : float) =
-    min (float_of_int state.cup_count) (min state.lemon_count state.sugar_count)
+let add_cost state p =
+  {
+    state = Adjusting;
+    days_left = state.days_left;
+    wallet = state.wallet;
+    lemon_count = state.lemon_count;
+    cup_count = state.cup_count;
+    sugar_count = state.sugar_count;
+    cup_lemon = state.cup_lemon;
+    cup_sugar = state.cup_sugar;
+    cup_water = state.cup_water;
+    price = p;
+  }
+
+let rec cup_sell state lemon sugar cup acc =
+  if
+    lemon -. get_cup_lemon_count state >= 0.
+    && sugar -. get_cup_sugar_count state >= 0.
+    && cup > 0
+  then
+    cup_sell state
+      (lemon -. get_cup_lemon_count state)
+      (sugar -. get_cup_sugar_count state)
+      (cup - 1) (acc + 1)
+  else acc
+
+let profit state =
+  float_of_int
+    (cup_sell state state.lemon_count state.sugar_count state.cup_count 0)
+  *. get_price state
+
+let serve state =
+  let sell_count =
+    float_of_int
+      (cup_sell state state.lemon_count state.sugar_count state.cup_count 0)
   in
   {
     state = Feedback;
     days_left = state.days_left - 1;
-    wallet = state.wallet +. (sell_count *. i);
-    lemon_count = state.lemon_count -. sell_count;
+    wallet = state.wallet +. profit state;
+    lemon_count = state.lemon_count -. (state.cup_lemon *. sell_count);
     cup_count = state.cup_count - int_of_float sell_count;
-    sugar_count = state.sugar_count -. sell_count;
+    sugar_count = state.sugar_count -. (state.cup_sugar *. sell_count);
     cup_lemon = state.cup_lemon;
     cup_sugar = state.cup_sugar;
     cup_water = state.cup_water;
-    price = i;
+    price = state.price;
   }
+
 (* let serve state = { state = Feedback; days_left = state.days_left - 1; wallet
    = state.wallet +. 5.0; lemon_count = state.lemon_count; cup_count =
    state.cup_count; sugar_count = state.sugar_count; } *)
+type ratio = {
+  sour : float;
+  sweet : float;
+  water : float;
+  cost : float;
+}
+
+let set_lemon = 4.
+let set_sugar = 4.
+let set_water = 1.
+let set_cost = 3.
+
+let response_ratio state =
+  {
+    sour = state.cup_lemon /. set_lemon;
+    sweet = state.cup_sugar /. set_sugar;
+    water = state.cup_water /. set_water;
+    cost = state.price /. set_cost;
+  }
 
 let next_state state = { state with days_left = state.days_left - 1 }
 let frat_party state = { state with cup_count = 0 }
