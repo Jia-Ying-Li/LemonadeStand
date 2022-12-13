@@ -83,16 +83,87 @@ let input_tests =
 (* Customer.ml *)
 (*****************************************************************)
 (* Fulfilling both side of OR statement for sour *)
-let ratioSourI = { sour = 5.; sweet = 0.; water = 0.5; cost = 1.5 }
+
+let test_state =
+  {
+    state = Adjusting;
+    days_left = 10;
+    wallet = 30.0;
+    lemon_count = 30.;
+    cup_count = 30;
+    sugar_count = 30.;
+    cup_lemon = 0.;
+    cup_sugar = 0.;
+    cup_water = 0.;
+    price = 0.;
+  }
+
+let ratioSourI =
+  {
+    test_state with
+    cup_lemon = 5.;
+    cup_sugar = 0.;
+    cup_water = 0.5;
+    price = 1.5;
+  }
 
 (* Short circuit of OR statement for sour *)
-let ratioSourII = { sour = 5.; sweet = 5.; water = 0.5; cost = 1.5 }
-let ratioBland = { sour = 1.; sweet = 1.; water = 2.; cost = 1.5 }
-let ratioJustRight = { sour = 4.; sweet = 4.; water = 1.; cost = 1.5 }
-let ratioExpensive = { sour = 3.; sweet = 3.; water = 1.; cost = 10. }
-let ratioCheap = { sour = 3.; sweet = 3.; water = 1.; cost = 0.5 }
-let ratioJustAlright = { sour = 3.; sweet = 3.; water = 1.; cost = 2. }
-let ratioMore = { sour = 3.; sweet = 4.; water = 2.; cost = 10. }
+let ratioSourII =
+  {
+    test_state with
+    cup_lemon = 5.;
+    cup_sugar = 5.;
+    cup_water = 0.5;
+    price = 1.5;
+  }
+
+let ratioBland =
+  {
+    test_state with
+    cup_lemon = 1.;
+    cup_sugar = 1.;
+    cup_water = 2.;
+    price = 1.5;
+  }
+
+let ratioJustRight =
+  {
+    test_state with
+    cup_lemon = 4.;
+    cup_sugar = 4.;
+    cup_water = 1.;
+    price = 1.5;
+  }
+
+let ratioExpensive =
+  {
+    test_state with
+    cup_lemon = 3.;
+    cup_sugar = 3.;
+    cup_water = 1.;
+    price = 10.;
+  }
+
+let ratioCheap =
+  {
+    test_state with
+    cup_lemon = 3.;
+    cup_sugar = 3.;
+    cup_water = 1.;
+    price = 0.5;
+  }
+
+let ratioJustAlright =
+  { test_state with cup_lemon = 3.; cup_sugar = 3.; cup_water = 1.; price = 2. }
+
+let ratioMore =
+  {
+    test_state with
+    cup_lemon = 3.;
+    cup_sugar = 4.;
+    cup_water = 2.;
+    price = 10.;
+  }
 
 let customer_tests =
   [

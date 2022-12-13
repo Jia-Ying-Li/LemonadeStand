@@ -35,49 +35,59 @@ let handle_add state params =
   | ingredient :: t ->
       if ingredient = "lemon" then
         let () =
-          print_string "How many? Please input a value between 1 and 2 >  "
+          print_string
+            "How many teaspoon of squeezed lemon will you like in each cup of \
+             lemonade? Please input an number between 0.5 and 5.0 >  "
         in
         let i = read_float () in
         Framework.add_lemons state i
       else if ingredient = "sugar" then
         let () =
           print_string
-            "How many tablespoons? Please input an number between 1.5 and 2.25 \
-             >  "
+            "How many teaspoon of sugar will you like in each cup of lemonade? \
+             Please input an number between 0.5 and 5.0 >  "
         in
         let i = read_float () in
         Framework.add_sugar state i
       else if ingredient = "water" then
         let () =
           print_string
-            "How many cups? Please input an number between 0.75 and 1.25 >  "
+            "How many cups of water will you like in each cup of lemonade? \
+             Please input an number between 0.5 and 2.0 >  "
         in
         let i = read_float () in
         Framework.add_water state i
       else if ingredient = "price" then
         let () = print_string "set the price >  " in
         let i = read_float () in
-        Framework.serve state i
+        Framework.add_cost state
+          i (* change from serve state, Framework.serve state i *)
       else Framework.init_state
 
 let handle_set_price state =
   let () = print_string "Set the price of your lemonade >   " in
   let i = read_float () in
-  Framework.serve state i
-
-let lst_resp = [ JustAlright; Cheap ]
+  Framework.add_cost state i (* change from serve state *)
 
 (* Make sure to decrement day and If typed in wrong command, next command no
    longer works *)
 let rec handle_feedback state =
   print_endline
     "==================================================================================================";
-  Printf.printf "[Feedback Stage]";
+  print_endline "[Feedback Stage]";
   print_endline "";
+  print_endline "Today's Earning:";
+  print_endline (string_of_float (Framework.profit state));
   print_endline "";
-  Customers.print_feedback (generate lst_resp 10) 10;
+  Customers.print_feedback
+    (generate
+       (Customers.customer_responses state [])
+       (cup_sell state state.lemon_count state.sugar_count state.cup_count 0))
+    (cup_sell state state.lemon_count state.sugar_count state.cup_count 0);
   print_endline "";
 
+  print_endline "Continue onto the next day with the command [next]";
+  print_endline "";
   print_endline "Commands:";
   print_endline "[next]";
   print_endline "[quit]";
@@ -89,7 +99,7 @@ let rec handle_feedback state =
     match read_line () with
     | input -> (
         match Input.parse input with
-        | Next -> purchase_game (next_state state)
+        | Next -> purchase_game (serve state)
         | Quit ->
             print_endline "Game Ended";
             raise GameEnded
@@ -135,11 +145,11 @@ and adjust_game new_state =
     && Framework.get_cup_sugar_count new_state > 0.
   then
     print_endline
-      "set the price of your lemonade using the function [add price]"
-  else print_endline "";
-  print_endline
-    "Add ingredients to your jug of lemonade! Use the command <add \
-     [ingredient]> to add 1)lemon 2)sugar or 3)water";
+      "set the price of your lemonade using the function [add] price"
+  else
+    print_endline
+      "Add ingredients to your jug of lemonade! Use the command <add \
+       [ingredient]> to add 1)lemon 2)sugar or 3)water";
   print_endline "";
   print_endline "Commands:";
   print_endline "[add]";
@@ -194,9 +204,9 @@ and purchase_game new_state =
   print_endline "";
   Printf.printf "Days left: %i\n" (Framework.get_days_left new_state);
   Printf.printf "Money left: %f\n" (Framework.get_wallet new_state);
-  Printf.printf "Lemons left: %f\n" (Framework.get_lemon_count new_state);
-  Printf.printf "Cups left: %i\n" (Framework.get_cup_count new_state);
-  Printf.printf "Sugars left: %f\n" (Framework.get_sugar_count new_state);
+  Printf.printf "(tsp) Lemons left: %f\n" (Framework.get_lemon_count new_state);
+  Printf.printf "(cups) Cups left: %i\n" (Framework.get_cup_count new_state);
+  Printf.printf "(tsp) Sugars left: %f\n" (Framework.get_sugar_count new_state);
   print_endline "";
 
   print_endline "Lemon";
