@@ -6,6 +6,8 @@ open Customers
 
 exception GameEnded
 
+let round2 n = Float.round (n *. 100.) /. 100.
+
 let option_helper i =
   match i with
   | 1 -> Ingredients.purchase_option1
@@ -315,8 +317,10 @@ and purchase_game new_state =
   input)*)
 
 let rec init_game state =
+  print_endline
+    "==================================================================================================";
   print_endline "\n";
-  print_endline "Welcome to the Lemonade Stand game.";
+  print_endline "Welcome to the Lemonade Stand Simulator";
   print_endline "Enter any key to start.";
   print_string "> ";
   match read_line () with

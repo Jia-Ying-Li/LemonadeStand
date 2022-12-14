@@ -5,6 +5,17 @@ open Ingredients
 open Input
 open Customers
 
+(********************************************************************
+  Test Plan
+ ********************************************************************)
+(** Framework.ml: Advika Todo
+
+    Ingredients.ml: Advika Todo
+
+    Input.ml:
+
+    Customer.ml: *)
+
 let print_responses r =
   match r with
   | Sour -> "Sour"
@@ -22,18 +33,13 @@ let cmp_set_like_lists lst1 lst2 =
   && List.length lst2 = List.length uniq2
   && uniq1 = uniq2
 
-let pp_list pp_elt lst =
-  let pp_elts lst =
-    let rec loop n acc = function
-      | [] -> acc
-      | [ h ] -> acc ^ pp_elt h
-      | h1 :: (h2 :: t as t') ->
-          if n = 100 then acc ^ "..." (* stop printing long list *)
-          else loop (n + 1) (acc ^ pp_elt h1 ^ "; ") t'
-    in
-    loop 0 "" lst
-  in
-  "[" ^ pp_elts lst ^ "]"
+let rec pp_list pp_elt lst =
+  match lst with
+  | [] -> ""
+  | [ h ] -> pp_elt h
+  | h :: t -> pp_elt h ^ ", " ^ pp_list pp_elt t
+
+let print_lst pp_elt lst = "[" ^ pp_list pp_elt lst ^ "]"
 
 (*****************************************************************)
 (* Framework.ml *)
@@ -82,8 +88,6 @@ let input_tests =
 (*****************************************************************)
 (* Customer.ml *)
 (*****************************************************************)
-(* Fulfilling both side of OR statement for sour *)
-
 let test_state =
   {
     state = Adjusting;
@@ -98,13 +102,14 @@ let test_state =
     price = 0.;
   }
 
+(* Fulfilling both side of OR statement for sour *)
 let ratioSourI =
   {
     test_state with
     cup_lemon = 5.;
-    cup_sugar = 0.;
+    cup_sugar = 0.5;
     cup_water = 0.5;
-    price = 1.5;
+    price = 2.;
   }
 
 (* Short circuit of OR statement for sour *)
@@ -112,28 +117,16 @@ let ratioSourII =
   {
     test_state with
     cup_lemon = 5.;
-    cup_sugar = 5.;
+    cup_sugar = 4.0;
     cup_water = 0.5;
-    price = 1.5;
+    price = 3.;
   }
 
 let ratioBland =
-  {
-    test_state with
-    cup_lemon = 1.;
-    cup_sugar = 1.;
-    cup_water = 2.;
-    price = 1.5;
-  }
+  { test_state with cup_lemon = 1.; cup_sugar = 1.; cup_water = 2.; price = 2. }
 
 let ratioJustRight =
-  {
-    test_state with
-    cup_lemon = 4.;
-    cup_sugar = 4.;
-    cup_water = 1.;
-    price = 1.5;
-  }
+  { test_state with cup_lemon = 4.; cup_sugar = 4.; cup_water = 1.; price = 2. }
 
 let ratioExpensive =
   {
@@ -169,36 +162,44 @@ let customer_tests =
   [
     ( "Testing customer_responses, Fulfilling both side of OR statement for sour"
     >:: fun _ ->
-      assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list print_responses)
+      assert_equal ~cmp:cmp_set_like_lists
+        ~printer:(print_lst print_responses)
         [ Sour; JustAlright ]
         (customer_responses ratioSourI []) );
     ( "Testing customer_responses, Short circuit of OR statement for sour"
     >:: fun _ ->
-      assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list print_responses)
+      assert_equal ~cmp:cmp_set_like_lists
+        ~printer:(print_lst print_responses)
         [ Sour; JustAlright ]
         (customer_responses ratioSourII []) );
     ( "Testing customer_responses, Bland Response" >:: fun _ ->
-      assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list print_responses)
+      assert_equal ~cmp:cmp_set_like_lists
+        ~printer:(print_lst print_responses)
         [ Bland; JustAlright ]
         (customer_responses ratioBland []) );
     ( "Testing customer_responses, JustRight Response" >:: fun _ ->
-      assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list print_responses)
+      assert_equal ~cmp:cmp_set_like_lists
+        ~printer:(print_lst print_responses)
         [ JustRight; JustAlright ]
         (customer_responses ratioJustRight []) );
     ( "Testing customer_responses, Expensive Response" >:: fun _ ->
-      assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list print_responses)
+      assert_equal ~cmp:cmp_set_like_lists
+        ~printer:(print_lst print_responses)
         [ Expensive; JustAlright ]
         (customer_responses ratioExpensive []) );
     ( "Testing customer_responses, Cheap Response" >:: fun _ ->
-      assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list print_responses)
+      assert_equal ~cmp:cmp_set_like_lists
+        ~printer:(print_lst print_responses)
         [ Cheap; JustAlright ]
         (customer_responses ratioCheap []) );
     ( "Testing customer_responses, JustAlright Response" >:: fun _ ->
-      assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list print_responses)
+      assert_equal ~cmp:cmp_set_like_lists
+        ~printer:(print_lst print_responses)
         [ JustAlright ]
         (customer_responses ratioJustAlright []) );
     ( "Testing customer_responses, Multiple Response" >:: fun _ ->
-      assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list print_responses)
+      assert_equal ~cmp:cmp_set_like_lists
+        ~printer:(print_lst print_responses)
         [ JustAlright; Expensive; Bland ]
         (customer_responses ratioMore []) );
     ( "Testing generate, Length of Zero" >:: fun _ ->

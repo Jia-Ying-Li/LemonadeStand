@@ -243,20 +243,6 @@ let serve state =
 (* let serve state = { state = Feedback; days_left = state.days_left - 1; wallet
    = state.wallet +. 5.0; lemon_count = state.lemon_count; cup_count =
    state.cup_count; sugar_count = state.sugar_count; } *)
-type ratio = {
-  sour : float;
-  sweet : float;
-  water : float;
-  cost : float;
-}
-
-let response_ratio state =
-  {
-    sour = state.cup_lemon /. set_lemon;
-    sweet = state.cup_sugar /. set_sugar;
-    water = state.cup_water /. set_water;
-    cost = state.price /. set_cost;
-  }
 
 let next_state state = { state with days_left = state.days_left - 1 }
 let frat_party state = { state with cup_count = 0 }

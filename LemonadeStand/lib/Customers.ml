@@ -52,26 +52,32 @@ let read_lines filename =
 (* JustAlright: To catch all the cases*)
 
 let customer_responses state lst =
-  let s = Framework.response_ratio state in
   let sour =
-    if s.sour > 4.25 || s.sour /. s.sweet > 1.5 then Sour :: lst else lst
+    if state.cup_lemon > 4.25 || state.cup_lemon /. state.cup_sugar > 1.5 then
+      Sour :: lst
+    else lst
   in
   let bland =
-    if (s.sour +. s.sweet) /. s.water < 5. then Bland :: sour else sour
+    if (state.cup_lemon +. state.cup_sugar) /. state.cup_water < 5. then
+      Bland :: sour
+    else sour
   in
   let justright =
     if
-      (s.sour +. s.sweet) /. s.water > 7.5
-      && (s.sour +. s.sweet) /. s.water < 8.5
+      (state.cup_lemon +. state.cup_sugar) /. state.cup_water > 7.5
+      && (state.cup_lemon +. state.cup_sugar) /. state.cup_water < 8.5
     then JustRight :: bland
     else bland
   in
   let expensive =
-    if ((s.sour +. s.sweet) /. s.cost < 1.75 && s.cost > 2.) || s.cost > 6. then
-      Expensive :: justright
+    if
+      (state.cup_lemon +. state.cup_sugar) /. state.cup_water < 1.75
+      && state.price > 2.
+      || state.price > 6.
+    then Expensive :: justright
     else justright
   in
-  let cheap = if s.cost < 1.5 then Cheap :: expensive else expensive in
+  let cheap = if state.price <= 1.5 then Cheap :: expensive else expensive in
   JustAlright :: cheap
 
 (* Accumulator: Number of responses generated Max: Number of people who

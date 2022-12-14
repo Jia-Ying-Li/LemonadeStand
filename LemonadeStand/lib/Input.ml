@@ -1,19 +1,12 @@
-(* type input = { ingredient : Ingredients.option; amt : int; } *)
-
-(* Raised when a command does not include Purchase or Done command *)
 exception CommandNotFound
-
-(* Raised when a command does not have necessary parameter *)
 exception InvalidParameter
-
-(* Raised when the input string is empty *)
 exception Empty
+exception EndofGame
 
 type command =
   | Purchase of string list
   | Add of string list
   | Serve
-  (* | Sell of string list *)
   | End
   | Next
   | Quit
