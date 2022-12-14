@@ -8,13 +8,24 @@ open Customers
 (********************************************************************
   Test Plan
  ********************************************************************)
-(** Framework.ml: Advika Todo
-
-    Ingredients.ml:
-
-    Input.ml:
-
-    Customer.ml: *)
+(** Our final project involves a lot of player input therefore, a lot of our
+    main.ml functions that output unit can’t be tested through OUnit but rather
+    through manual testing. However, the functions inside our other modules
+    (Framework, Ingredients, Customer, Input) are less reliant on player input
+    and can be tested through OUnit and this in a way guarantees the functions
+    in main.ml to be working as main.ml is heavily reliant on the functions
+    created in these other modules. One exception is Customer.ml which contains
+    functions that have a random component to it therefore it’s unknown what the
+    output may be. Since we can’t pinpoint exactly what the output may be, to
+    get around this, we decide to test the property of the output in these
+    functions. For example, one of the functions outputs a string list, we may
+    not know what it contains but it’s certain what the length will be and
+    that’s something we can test. Most of our test cases are developed using
+    glass box testing. We will test edge cases and some common cases to make
+    sure our intention for these functions follow through in the test cases.
+    This testing approach demonstrates the correctness of the system because we
+    will attempt to test every property of these functions and all the possible
+    outputs using our knowledge of how the functions are implemented. *)
 
 let print_responses r =
   match r with

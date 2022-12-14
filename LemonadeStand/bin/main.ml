@@ -107,8 +107,7 @@ let rec handle_feedback state =
   Customers.print_feedback
     (generate
        (Customers.customer_responses state [])
-       (int_of_float (cup_ready state)))
-    (int_of_float (cup_ready state));
+       (int_of_float (cup_ready state)));
   print_endline "";
 
   print_endline "Continue onto the next day with the command [next]";

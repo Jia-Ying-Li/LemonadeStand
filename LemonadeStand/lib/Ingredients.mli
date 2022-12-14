@@ -2,10 +2,9 @@ type options
 (** The type [options] represents the different unit of ingredients you can
     purchase. *)
 
-type bounds
-(** The type [bounds] represents *)
-
 type cup_contains
+(** the type [cup_contains] represents the different ingredients each cup
+    contains. *)
 
 val purchase_option0 : options
 val purchase_option1 : options

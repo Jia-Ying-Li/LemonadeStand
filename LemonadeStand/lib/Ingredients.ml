@@ -16,12 +16,6 @@ type options = {
   sugar : price;
 }
 
-type bounds = {
-  upper_bound : float;
-  lower_bound : float;
-  optimal : float;
-}
-
 type cup_contains = {
   lemon : float;
   sugar : float;

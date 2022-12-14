@@ -159,9 +159,9 @@ let rec generate lst acc =
         (Random.int 3)
       :: generate lst (acc - 1)
 
-let rec print_feedback lst acc =
+let rec print_feedback lst =
   match lst with
   | [] -> ()
   | h :: t ->
       print_endline h;
-      print_feedback t (acc - 1)
+      print_feedback t

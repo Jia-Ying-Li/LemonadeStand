@@ -22,7 +22,8 @@ val customer_responses : t -> responses list -> responses list
 val generate : responses list -> int -> string list
 (** [generate f i] Returns a string list of customer feedbacks based off the
     given response list that depend on the player's input of price and recipe.
-    Requires: [t] is a valid state and [r] a valid int *)
+    Requires: [t] is a valid state and [r] is a valid int *)
 
-val print_feedback : string list -> int -> unit
-(** [customer_responses t i] Returns *)
+val print_feedback : string list -> unit
+(** [customer_responses s] Returns unit and prints the string list it was
+    provided. Requires: [s] is a valid string list. *)
