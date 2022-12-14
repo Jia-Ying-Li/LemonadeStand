@@ -36,7 +36,7 @@ val parse : string -> command
     key words.
 
     Raises: [InvalidParameter] if the input consisting of a verb followed by an
-    object phase (ex. Purchase t and Add t) does not contain a valid object
+    object phase (ex. [Purchase t] and [Add t]) does not contain a valid object
     phrase, t.
 
     Raises: [Empty] if the input is the empty string or contains only spaces. *)

@@ -18,7 +18,7 @@ type t = {
   price : float;
 }
 
-let start_state =
+let init_state =
   {
     state = Start;
     days_left = 10;
@@ -32,7 +32,7 @@ let start_state =
     price = 0.;
   }
 
-let init_state =
+let purchasing_state =
   {
     state = Purchasing;
     days_left = 10;
@@ -55,34 +55,6 @@ let get_cup_lemon_count state = state.cup_lemon
 let get_cup_water_count state = state.cup_water
 let get_cup_sugar_count state = state.cup_sugar
 let get_price state = state.price
-
-let adjust_state state =
-  {
-    state = Adjusting;
-    days_left = state.days_left;
-    wallet = state.wallet;
-    lemon_count = state.lemon_count;
-    cup_count = state.cup_count;
-    sugar_count = state.sugar_count;
-    cup_lemon = 0.;
-    cup_sugar = 0.;
-    cup_water = 0.;
-    price = 0.;
-  }
-
-let add_water state count =
-  {
-    state = Purchasing;
-    days_left = state.days_left;
-    wallet = state.wallet;
-    lemon_count = state.lemon_count;
-    cup_count = state.cup_count;
-    sugar_count = state.sugar_count;
-    cup_lemon = state.cup_lemon;
-    cup_sugar = state.cup_sugar;
-    cup_water = count;
-    price = 0.;
-  }
 
 let buy_lemon state count cost =
   {
@@ -140,20 +112,6 @@ let add_lemons state count =
     price = 0.;
   }
 
-let return_state state =
-  {
-    state = Adjusting;
-    days_left = state.days_left;
-    wallet = state.wallet;
-    lemon_count = state.lemon_count;
-    cup_count = state.cup_count;
-    sugar_count = state.sugar_count;
-    cup_lemon = state.cup_lemon;
-    cup_sugar = state.cup_sugar;
-    cup_water = state.cup_water;
-    price = 0.;
-  }
-
 let add_sugar state count =
   {
     state = Adjusting;
@@ -168,8 +126,6 @@ let add_sugar state count =
     price = 0.;
   }
 
-let compare_to_optimal ingr = 0
-
 let add_cost state p =
   {
     state = Adjusting;
@@ -183,6 +139,36 @@ let add_cost state p =
     cup_water = state.cup_water;
     price = p;
   }
+
+let add_water state count =
+  {
+    state = Purchasing;
+    days_left = state.days_left;
+    wallet = state.wallet;
+    lemon_count = state.lemon_count;
+    cup_count = state.cup_count;
+    sugar_count = state.sugar_count;
+    cup_lemon = state.cup_lemon;
+    cup_sugar = state.cup_sugar;
+    cup_water = count;
+    price = 0.;
+  }
+
+let return_state state =
+  {
+    state = Adjusting;
+    days_left = state.days_left;
+    wallet = state.wallet;
+    lemon_count = state.lemon_count;
+    cup_count = state.cup_count;
+    sugar_count = state.sugar_count;
+    cup_lemon = state.cup_lemon;
+    cup_sugar = state.cup_sugar;
+    cup_water = state.cup_water;
+    price = 0.;
+  }
+
+let compare_to_optimal ingr = 0
 
 let rec cup_sell state lemon sugar cup acc =
   if
@@ -219,14 +205,7 @@ let cup_ready state =
 let profit state = cup_ready state *. get_price state
 
 let serve state =
-  let sell_count =
-    float_of_int
-      (int_of_float
-         (float_of_int
-            (cup_sell state state.lemon_count state.sugar_count state.cup_count
-               0)
-         *. deviation state))
-  in
+  let sell_count = cup_ready state in
   {
     state = Feedback;
     days_left = state.days_left - 1;
@@ -240,11 +219,20 @@ let serve state =
     price = state.price;
   }
 
-(* let serve state = { state = Feedback; days_left = state.days_left - 1; wallet
-   = state.wallet +. 5.0; lemon_count = state.lemon_count; cup_count =
-   state.cup_count; sugar_count = state.sugar_count; } *)
+let test_set l s w p =
+  {
+    state = Adjusting;
+    days_left = 10;
+    wallet = 30.;
+    lemon_count = 30.;
+    cup_count = 60;
+    sugar_count = 30.;
+    cup_lemon = l;
+    cup_sugar = s;
+    cup_water = w;
+    price = p;
+  }
 
-let next_state state = { state with days_left = state.days_left - 1 }
 let frat_party state = { state with cup_count = 0 }
 let fridge_broke state = { state with lemon_count = 0. }
 let rat_infestation state = { state with sugar_count = 0. }

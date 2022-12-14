@@ -37,7 +37,7 @@ let handle_purchase state params =
         Framework.buy_sugar state
           (Ingredients.get_sugar_amt (option_helper i))
           (Ingredients.get_sugar_total_cost (option_helper i))
-      else Framework.init_state
+      else state
 
 let check_add state =
   if
@@ -169,7 +169,7 @@ and adjust_game new_state =
   Printf.printf "Water per cup: %f\n" (Framework.get_cup_water_count new_state);
   print_endline "";
   Printf.printf "Price of lemonade: %f\n" (Framework.get_price new_state);
-
+  print_endline "";
   if
     Framework.get_cup_water_count new_state > 0.
     && Framework.get_cup_lemon_count new_state > 0.
@@ -181,6 +181,10 @@ and adjust_game new_state =
     print_endline
       "Add ingredients to your jug of lemonade! Use the command <add \
        [ingredient]> to add 1)lemon 2)sugar or 3)water";
+  print_endline "";
+  print_endline
+    "(Continue onto serving with the command [serve] after you're done \
+     creating your recipe)";
   print_endline "";
   print_endline "Commands:";
   print_endline "[add]";
@@ -242,6 +246,7 @@ and purchase_game new_state =
   Printf.printf "(tsp) Sugar Remaining: %f\n"
     (Framework.get_sugar_count new_state);
   print_endline "";
+  print_endline "Welcome to the Store!";
   print_endline "________________________________________________";
   print_endline "";
   print_endline "Lemon";
@@ -324,7 +329,7 @@ let rec init_game state =
   print_endline "Enter any key to start.";
   print_string "> ";
   match read_line () with
-  | random_input -> purchase_game Framework.init_state
+  | random_input -> purchase_game Framework.purchasing_state
 
-let begin_game = init_game Framework.start_state
+let begin_game = init_game Framework.init_state
 (*let () = main ()*)

@@ -53,31 +53,47 @@ let read_lines filename =
 
 let customer_responses state lst =
   let sour =
-    if state.cup_lemon > 4.25 || state.cup_lemon /. state.cup_sugar > 1.5 then
-      Sour :: lst
+    if
+      get_cup_lemon_count state > 4.25
+      || get_cup_lemon_count state /. get_cup_sugar_count state > 1.5
+    then Sour :: lst
     else lst
   in
   let bland =
-    if (state.cup_lemon +. state.cup_sugar) /. state.cup_water < 5. then
-      Bland :: sour
+    if
+      (get_cup_lemon_count state +. get_cup_sugar_count state)
+      /. get_cup_water_count state
+      < 5.
+    then Bland :: sour
     else sour
   in
   let justright =
     if
-      (state.cup_lemon +. state.cup_sugar) /. state.cup_water > 7.5
-      && (state.cup_lemon +. state.cup_sugar) /. state.cup_water < 8.5
+      (get_cup_lemon_count state +. get_cup_sugar_count state)
+      /. get_cup_water_count state
+      > 7.5
+      && (get_cup_lemon_count state +. get_cup_sugar_count state)
+         /. get_cup_water_count state
+         < 8.5
+      || get_cup_lemon_count state = 4.
+         && get_cup_sugar_count state = 4.
+         && get_cup_water_count state = 1.
     then JustRight :: bland
     else bland
   in
   let expensive =
     if
-      (state.cup_lemon +. state.cup_sugar) /. state.cup_water < 1.75
-      && state.price > 2.
-      || state.price > 6.
+      (get_cup_lemon_count state +. get_cup_sugar_count state)
+      /. get_cup_water_count state
+      < 1.75
+      && get_price state > 2.
+      || get_price state > 6.
     then Expensive :: justright
     else justright
   in
-  let cheap = if state.price <= 1.5 then Cheap :: expensive else expensive in
+  let cheap =
+    if get_price state <= 1.5 then Cheap :: expensive else expensive
+  in
   JustAlright :: cheap
 
 (* Accumulator: Number of responses generated Max: Number of people who

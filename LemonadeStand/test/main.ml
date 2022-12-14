@@ -10,7 +10,7 @@ open Customers
  ********************************************************************)
 (** Framework.ml: Advika Todo
 
-    Ingredients.ml: Advika Todo
+    Ingredients.ml:
 
     Input.ml:
 
@@ -88,75 +88,17 @@ let input_tests =
 (*****************************************************************)
 (* Customer.ml *)
 (*****************************************************************)
-let test_state =
-  {
-    state = Adjusting;
-    days_left = 10;
-    wallet = 30.0;
-    lemon_count = 30.;
-    cup_count = 30;
-    sugar_count = 30.;
-    cup_lemon = 0.;
-    cup_sugar = 0.;
-    cup_water = 0.;
-    price = 0.;
-  }
-
 (* Fulfilling both side of OR statement for sour *)
-let ratioSourI =
-  {
-    test_state with
-    cup_lemon = 5.;
-    cup_sugar = 0.5;
-    cup_water = 0.5;
-    price = 2.;
-  }
+let ratioSourI = Framework.test_set 5. 0.5 0.5 2.
 
 (* Short circuit of OR statement for sour *)
-let ratioSourII =
-  {
-    test_state with
-    cup_lemon = 5.;
-    cup_sugar = 4.0;
-    cup_water = 0.5;
-    price = 3.;
-  }
-
-let ratioBland =
-  { test_state with cup_lemon = 1.; cup_sugar = 1.; cup_water = 2.; price = 2. }
-
-let ratioJustRight =
-  { test_state with cup_lemon = 4.; cup_sugar = 4.; cup_water = 1.; price = 2. }
-
-let ratioExpensive =
-  {
-    test_state with
-    cup_lemon = 3.;
-    cup_sugar = 3.;
-    cup_water = 1.;
-    price = 10.;
-  }
-
-let ratioCheap =
-  {
-    test_state with
-    cup_lemon = 3.;
-    cup_sugar = 3.;
-    cup_water = 1.;
-    price = 0.5;
-  }
-
-let ratioJustAlright =
-  { test_state with cup_lemon = 3.; cup_sugar = 3.; cup_water = 1.; price = 2. }
-
-let ratioMore =
-  {
-    test_state with
-    cup_lemon = 3.;
-    cup_sugar = 4.;
-    cup_water = 2.;
-    price = 10.;
-  }
+let ratioSourII = Framework.test_set 5. 4. 0.5 3.
+let ratioBland = Framework.test_set 1. 1. 2. 2.
+let ratioJustRight = Framework.test_set 4. 4. 1. 2.
+let ratioExpensive = Framework.test_set 3. 3. 1. 10.
+let ratioCheap = Framework.test_set 3. 3. 1.0 0.5
+let ratioJustAlright = Framework.test_set 3. 3. 1. 2.
+let ratioMore = Framework.test_set 3. 4. 2. 10.
 
 let customer_tests =
   [
