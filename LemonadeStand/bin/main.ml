@@ -93,56 +93,53 @@ let handle_set_price state =
 (* Make sure to decrement day and If typed in wrong command, next command no
    longer works *)
 let rec handle_feedback state =
-  if get_days_left state > 0 then begin
-    print_endline
-      "==================================================================================================";
+  print_endline
+    "==================================================================================================";
 
-    print_endline "[Feedback Stage]";
-    print_endline "";
-    print_endline "Number of Customers:";
-    print_endline (string_of_float (cup_ready state));
-    print_endline "";
-    print_endline "Today's Earning:";
-    print_endline (string_of_float (Framework.profit state));
-    print_endline "";
-    Customers.print_feedback
-      (generate
-         (Customers.customer_responses state [])
-         (int_of_float (cup_ready state)))
-      (int_of_float (cup_ready state));
-    print_endline "";
+  print_endline "[Feedback Stage]";
+  print_endline "";
+  print_endline "Number of Customers:";
+  print_endline (string_of_float (cup_ready state));
+  print_endline "";
+  print_endline "Today's Earning:";
+  print_endline (string_of_float (Framework.profit state));
+  print_endline "";
+  Customers.print_feedback
+    (generate
+       (Customers.customer_responses state [])
+       (int_of_float (cup_ready state)))
+    (int_of_float (cup_ready state));
+  print_endline "";
 
-    print_endline "Continue onto the next day with the command [next]";
-    print_endline "";
-    print_endline "Commands:";
-    print_endline "[next]";
-    print_endline "[quit]";
+  print_endline "Continue onto the next day with the command [next]";
+  print_endline "";
+  print_endline "Commands:";
+  print_endline "[next]";
+  print_endline "[quit]";
 
-    print_endline "";
+  print_endline "";
+  print_string "> ";
+
+  try
+    match read_line () with
+    | input -> (
+        match Input.parse input with
+        | Next ->
+            if get_days_left state > 0 then purchase_game (serve state)
+            else
+              print_endline
+                "==================================================================================================";
+            print_endline "You Reached the End of the Game";
+            raise EndofGame
+        | Quit ->
+            print_endline "Game Ended";
+            raise GameEnded
+        | _ -> raise CommandNotFound)
+  with CommandNotFound -> (
+    print_endline "Invalid Command, Please Input in the correct format";
     print_string "> ";
-
-    try
-      match read_line () with
-      | input -> (
-          match Input.parse input with
-          | Next -> purchase_game (serve state)
-          | Quit ->
-              print_endline "Game Ended";
-              raise GameEnded
-          | _ -> raise CommandNotFound)
-    with CommandNotFound -> (
-      print_endline "Invalid Command, Please Input in the correct format";
-      print_string "> ";
-      match read_line () with
-      | input -> handle_feedback state)
-  end
-  else begin
-    print_endline
-      "==================================================================================================";
-    print_endline "End of Game";
-    print_endline "";
-    state
-  end
+    match read_line () with
+    | input -> handle_feedback state)
 (* Using the number of cups that can be made, multiply that number to the cost
    input. Using a formula, determine how many sales there will be base on the
    deviation from the optimal creation. Using the number of sale, display
