@@ -8,6 +8,7 @@ open Customers
 (********************************************************************
   Test Plan
  ********************************************************************)
+
 (** Our final project involves a lot of player input therefore, a lot of our
     main.ml functions that output unit can’t be tested through OUnit but rather
     through manual testing. However, the functions inside our other modules
