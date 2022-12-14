@@ -44,13 +44,28 @@ let print_lst pp_elt lst = "[" ^ pp_list pp_elt lst ^ "]"
 (*****************************************************************)
 (* Framework.ml *)
 (*****************************************************************)
-(* Advika Todo *)
+
+(* val init_state : t val purchasing_state : t val get_wallet : t -> float val
+   get_days_left : t -> int val get_lemon_count : t -> float val get_cup_count :
+   t -> int val get_sugar_count : t -> float val get_cup_sugar_count : t ->
+   float val get_cup_lemon_count : t -> float val get_cup_water_count : t ->
+   float val get_price : t -> float val buy_lemon : t -> float -> float -> t val
+   buy_cup : t -> int -> float -> t val buy_sugar : t -> float -> float -> t val
+   add_sugar : t -> float -> t val add_lemons : t -> float -> t val add_water :
+   t -> float -> t val add_cost : t -> float -> t val serve : t -> t val
+   return_state : t -> t val cup_sell : t -> float -> float -> int -> int -> int
+   val profit : t -> float val cup_ready : t -> float val test_set : float ->
+   float -> float -> float -> t *)
 
 (*****************************************************************)
 (* Ingredients.ml *)
 (*****************************************************************)
-(* Advika Todo *)
-
+(* val purchase_option0 : options val purchase_option1 : options val
+   purchase_option2 : options val purchase_option3 : options val
+   get_lemon_total_cost : options -> float val get_cup_total_cost : options ->
+   float val get_sugar_total_cost : options -> float val get_lemon_amt : options
+   -> float val get_cup_amt : options -> int val get_sugar_amt : options ->
+   float val set_cup : float -> float -> float -> cup_contains *)
 (*****************************************************************)
 (* Input.ml *)
 (*****************************************************************)
