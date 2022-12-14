@@ -6,8 +6,6 @@ open Customers
 
 exception GameEnded
 
-let round2 n = Float.round (n *. 100.) /. 100.
-
 let option_helper i =
   match i with
   | 1 -> Ingredients.purchase_option1
