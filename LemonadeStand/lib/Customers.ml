@@ -41,7 +41,6 @@ let read_lines filename =
   in
   loop () rand_count
 
-(* Let's say each lemon yields 3 tsp of lemon juice *)
 (* Sour: greater than 20% of the perfect amount of squeezed lemon or the ratio
    of squeezed lemon is 20% greater than that of sugar *)
 (* Bland: The ratio of squeezed lemon and sugar to water amount is less than 5*)

@@ -1,5 +1,10 @@
 type options
+(** The type [options] represents the different unit of ingredients you can
+    purchase. *)
+
 type bounds
+(** The type [bounds] represents *)
+
 type cup_contains
 
 val set_bounds_lemons : bounds
