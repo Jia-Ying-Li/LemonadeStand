@@ -196,15 +196,36 @@ let rec cup_sell state lemon sugar cup acc =
       (cup - 1) (acc + 1)
   else acc
 
-let profit state =
-  float_of_int
-    (cup_sell state state.lemon_count state.sugar_count state.cup_count 0)
-  *. get_price state
+let set_lemon = 4.
+let set_sugar = 4.
+let set_water = 1.
+let set_cost = 3.
+let deviate_lemon state = set_lemon -. Float.abs (state.cup_lemon -. set_lemon)
+let deviate_sugar state = set_sugar -. Float.abs (state.cup_sugar -. set_sugar)
+let deviate_water state = set_water -. Float.abs (state.cup_water -. set_water)
+
+let deviate lemon sugar water =
+  (lemon +. sugar +. water) /. (set_lemon +. set_sugar +. set_water)
+
+let deviation state =
+  deviate (deviate_lemon state) (deviate_sugar state) (deviate_water state)
+
+let cup_ready state =
+  Float.round
+    (float_of_int
+       (cup_sell state state.lemon_count state.sugar_count state.cup_count 0)
+    *. deviation state)
+
+let profit state = cup_ready state *. get_price state
 
 let serve state =
   let sell_count =
     float_of_int
-      (cup_sell state state.lemon_count state.sugar_count state.cup_count 0)
+      (int_of_float
+         (float_of_int
+            (cup_sell state state.lemon_count state.sugar_count state.cup_count
+               0)
+         *. deviation state))
   in
   {
     state = Feedback;
@@ -228,11 +249,6 @@ type ratio = {
   water : float;
   cost : float;
 }
-
-let set_lemon = 4.
-let set_sugar = 4.
-let set_water = 1.
-let set_cost = 3.
 
 let response_ratio state =
   {

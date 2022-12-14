@@ -83,7 +83,7 @@ let handle_add state params =
         let i = read_float () in
         Framework.add_cost state
           i (* change from serve state, Framework.serve state i *)
-      else Framework.init_state
+      else state
 
 let handle_set_price state =
   let () = print_string "Set the price of your lemonade >   " in
@@ -93,43 +93,56 @@ let handle_set_price state =
 (* Make sure to decrement day and If typed in wrong command, next command no
    longer works *)
 let rec handle_feedback state =
-  print_endline
-    "==================================================================================================";
-  print_endline "[Feedback Stage]";
-  print_endline "";
-  print_endline "Today's Earning:";
-  print_endline (string_of_float (Framework.profit state));
-  print_endline "";
-  Customers.print_feedback
-    (generate
-       (Customers.customer_responses state [])
-       (cup_sell state state.lemon_count state.sugar_count state.cup_count 0))
-    (cup_sell state state.lemon_count state.sugar_count state.cup_count 0);
-  print_endline "";
+  if get_days_left state > 0 then begin
+    print_endline
+      "==================================================================================================";
 
-  print_endline "Continue onto the next day with the command [next]";
-  print_endline "";
-  print_endline "Commands:";
-  print_endline "[next]";
-  print_endline "[quit]";
+    print_endline "[Feedback Stage]";
+    print_endline "";
+    print_endline "Number of Customers:";
+    print_endline (string_of_float (cup_ready state));
+    print_endline "";
+    print_endline "Today's Earning:";
+    print_endline (string_of_float (Framework.profit state));
+    print_endline "";
+    Customers.print_feedback
+      (generate
+         (Customers.customer_responses state [])
+         (int_of_float (cup_ready state)))
+      (int_of_float (cup_ready state));
+    print_endline "";
 
-  print_endline "";
-  print_string "> ";
+    print_endline "Continue onto the next day with the command [next]";
+    print_endline "";
+    print_endline "Commands:";
+    print_endline "[next]";
+    print_endline "[quit]";
 
-  try
-    match read_line () with
-    | input -> (
-        match Input.parse input with
-        | Next -> purchase_game (serve state)
-        | Quit ->
-            print_endline "Game Ended";
-            raise GameEnded
-        | _ -> raise CommandNotFound)
-  with CommandNotFound -> (
-    print_endline "Invalid Command, Please Input in the correct format";
+    print_endline "";
     print_string "> ";
-    match read_line () with
-    | input -> handle_feedback state)
+
+    try
+      match read_line () with
+      | input -> (
+          match Input.parse input with
+          | Next -> purchase_game (serve state)
+          | Quit ->
+              print_endline "Game Ended";
+              raise GameEnded
+          | _ -> raise CommandNotFound)
+    with CommandNotFound -> (
+      print_endline "Invalid Command, Please Input in the correct format";
+      print_string "> ";
+      match read_line () with
+      | input -> handle_feedback state)
+  end
+  else begin
+    print_endline
+      "==================================================================================================";
+    print_endline "End of Game";
+    print_endline "";
+    state
+  end
 (* Using the number of cups that can be made, multiply that number to the cost
    input. Using a formula, determine how many sales there will be base on the
    deviation from the optimal creation. Using the number of sale, display
@@ -225,9 +238,12 @@ and purchase_game new_state =
   print_endline "";
   Printf.printf "Days left: %i\n" (Framework.get_days_left new_state);
   Printf.printf "Money left: %f\n" (Framework.get_wallet new_state);
-  Printf.printf "(tsp) Lemons left: %f\n" (Framework.get_lemon_count new_state);
-  Printf.printf "(cups) Cups left: %i\n" (Framework.get_cup_count new_state);
-  Printf.printf "(tsp) Sugars left: %f\n" (Framework.get_sugar_count new_state);
+  Printf.printf "(tsp) Lemons Remaining: %f\n"
+    (Framework.get_lemon_count new_state);
+  Printf.printf "(cups) Cups Remaining: %i\n"
+    (Framework.get_cup_count new_state);
+  Printf.printf "(tsp) Sugar Remaining: %f\n"
+    (Framework.get_sugar_count new_state);
   print_endline "";
   print_endline "________________________________________________";
   print_endline "";
