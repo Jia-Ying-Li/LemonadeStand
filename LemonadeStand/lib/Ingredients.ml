@@ -28,10 +28,6 @@ type cup_contains = {
   water : float;
 }
 
-let set_bounds_lemons = { upper_bound = 2.; lower_bound = 1.; optimal = 1.5 }
-let set_bounds_sugar = { upper_bound = 2.25; lower_bound = 1.5; optimal = 2. }
-let set_bounds_water = { upper_bound = 0.75; lower_bound = 1.25; optimal = 1. }
-
 let purchase_option0 =
   {
     lemon = { amt = 0.; total_cost = 0.; unit_price = 0. };
