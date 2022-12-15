@@ -16,12 +16,6 @@ type options = {
   sugar : price;
 }
 
-type cup_contains = {
-  lemon : float;
-  sugar : float;
-  water : float;
-}
-
 let purchase_option0 =
   {
     lemon = { amt = 0.; total_cost = 0.; unit_price = 0. };
@@ -56,12 +50,3 @@ let get_cup_total_cost (option : options) = option.cup.total_cost
 let get_cup_amt (option : options) = option.cup.amt
 let get_sugar_total_cost (option : options) = option.sugar.total_cost
 let get_sugar_amt (option : options) = option.sugar.amt
-
-(* let get_lemon_total_cost = purchase_option1.lemon.total_cost let
-   get_lemon_amt = purchase_option1.lemon.amt let get_cup_total_cost =
-   purchase_option1.cup.total_cost let get_cup_amt = purchase_option1.cup.amt
-   let get_sugar_total_cost = purchase_option1.sugar.total_cost let
-   get_sugar_amt = purchase_option1.sugar.amt *)
-
-let set_cup (i : float) (j : float) (k : float) =
-  { lemon = i; sugar = j; water = k }

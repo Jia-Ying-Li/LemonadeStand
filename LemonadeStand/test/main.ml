@@ -8,7 +8,6 @@ open Customers
 (********************************************************************
   Test Plan
  ********************************************************************)
-
 (** Our final project involves a lot of player input therefore, a lot of our
     main.ml functions that output unit can’t be tested through OUnit but rather
     through manual testing. However, the functions inside our other modules
@@ -57,27 +56,250 @@ let print_lst pp_elt lst = "[" ^ pp_list pp_elt lst ^ "]"
 (* Framework.ml *)
 (*****************************************************************)
 
-(* val init_state : t val purchasing_state : t val get_wallet : t -> float val
-   get_days_left : t -> int val get_lemon_count : t -> float val get_cup_count :
-   t -> int val get_sugar_count : t -> float val get_cup_sugar_count : t ->
-   float val get_cup_lemon_count : t -> float val get_cup_water_count : t ->
-   float val get_price : t -> float val buy_lemon : t -> float -> float -> t val
-   buy_cup : t -> int -> float -> t val buy_sugar : t -> float -> float -> t val
-   add_sugar : t -> float -> t val add_lemons : t -> float -> t val add_water :
-   t -> float -> t val add_cost : t -> float -> t val serve : t -> t val
-   return_state : t -> t val cup_sell : t -> float -> float -> int -> int -> int
-   val profit : t -> float val cup_ready : t -> float val test_set : float ->
-   float -> float -> float -> t *)
+let test_set_test (l : float) (s : float) (w : float) (p : float)
+    (expected_output : Framework.t) : test =
+  "Testing profit" >:: fun _ -> assert_equal expected_output (test_set l s w p)
+
+let test_set_tests = [ [ test_set_test 0. 0. 0. 0. Framework.adjusting_state ] ]
+
+let profit_test (t : Framework.t) (expected_output : float) : test =
+  "Testing profit" >:: fun _ -> assert_equal expected_output (cup_ready t)
+
+let profit_tests = [ [ profit_test Framework.adjusting_state 0. ] ]
+
+let cup_ready_test (t : Framework.t) (expected_output : float) : test =
+  "Testing cup_ready" >:: fun _ -> assert_equal expected_output (cup_ready t)
+
+let cup_ready_tests = [ [ cup_ready_test Framework.adjusting_state 0. ] ]
+
+let return_state_test (t : Framework.t) (expected_output : Framework.t) : test =
+  "Testing return_state" >:: fun _ ->
+  assert_equal expected_output (return_state t)
+
+let return_state_tests =
+  [ [ return_state_test Framework.adjusting_state Framework.adjusting_state ] ]
+
+let add_cost_test (t : Framework.t) (cost : float)
+    (expected_output : Framework.t) : test =
+  "Testing add_cost" >:: fun _ ->
+  assert_equal expected_output (add_sugar t cost)
+
+let add_cost_tests =
+  [ [ add_cost_test Framework.adjusting_state 0. Framework.adjusting_state ] ]
+
+let add_sugar_test (t : Framework.t) (count : float)
+    (expected_output : Framework.t) : test =
+  "Testing add_sugar" >:: fun _ ->
+  assert_equal expected_output (add_sugar t count)
+
+let add_sugar_tests =
+  [ [ add_sugar_test Framework.adjusting_state 0. Framework.adjusting_state ] ]
+
+let add_lemons_test (t : Framework.t) (count : float)
+    (expected_output : Framework.t) : test =
+  "Testing add_lemons" >:: fun _ ->
+  assert_equal expected_output (add_lemons t count)
+
+let add_lemons_tests =
+  [ [ add_lemons_test Framework.adjusting_state 0. Framework.adjusting_state ] ]
+
+let add_water_test (t : Framework.t) (count : float)
+    (expected_output : Framework.t) : test =
+  "Testing add_water" >:: fun _ ->
+  assert_equal expected_output (add_water t count)
+
+let add_water_tests =
+  [ [ add_water_test Framework.adjusting_state 0. Framework.adjusting_state ] ]
+
+let buy_lemon_test (t : Framework.t) (count : float) (cost : float)
+    (expected_output : Framework.t) : test =
+  "Testing buy_lemon" >:: fun _ ->
+  assert_equal expected_output (buy_lemon t count cost)
+
+let buy_lemon_tests =
+  [
+    [
+      buy_lemon_test Framework.purchasing_state 0. 0. Framework.purchasing_state;
+    ];
+  ]
+
+let buy_sugar_test (t : Framework.t) (count : float) (cost : float)
+    (expected_output : Framework.t) : test =
+  "Testing buy_sugar" >:: fun _ ->
+  assert_equal expected_output (buy_sugar t count cost)
+
+let buy_sugar_tests =
+  [
+    [
+      buy_sugar_test Framework.purchasing_state 0. 0. Framework.purchasing_state;
+    ];
+  ]
+
+let buy_cup_test (t : Framework.t) (count : int) (cost : float)
+    (expected_output : Framework.t) : test =
+  "Testing buy_cup" >:: fun _ ->
+  assert_equal expected_output (buy_cup t count cost)
+
+let buy_cup_tests =
+  [
+    [ buy_cup_test Framework.purchasing_state 0 0. Framework.purchasing_state ];
+  ]
+
+let get_wallet_test (t : Framework.t) (expected_output : float) : test =
+  "Testing get_wallet" >:: fun _ -> assert_equal expected_output (get_wallet t)
+
+let get_wallet_tests = [ [ get_wallet_test Framework.init_state 30. ] ]
+
+let get_days_left_test (t : Framework.t) (expected_output : int) : test =
+  "Testing get_days_left" >:: fun _ ->
+  assert_equal expected_output (get_days_left t)
+
+let get_days_left_tests = [ [ get_days_left_test Framework.init_state 10 ] ]
+
+let get_lemon_count_test (t : Framework.t) (expected_output : float) : test =
+  "Testing get_lemon_count" >:: fun _ ->
+  assert_equal expected_output (get_lemon_count t)
+
+let get_lemon_count_tests = [ [ get_lemon_count_test Framework.init_state 0. ] ]
+
+let get_sugar_count_test (t : Framework.t) (expected_output : float) : test =
+  "Testing get_sugar_count" >:: fun _ ->
+  assert_equal expected_output (get_sugar_count t)
+
+let get_sugar_count_tests = [ [ get_sugar_count_test Framework.init_state 0. ] ]
+
+let get_cup_count_test (t : Framework.t) (expected_output : int) : test =
+  "Testing get_cup_count" >:: fun _ ->
+  assert_equal expected_output (get_cup_count t)
+
+let get_cup_count_tests = [ [ get_cup_count_test Framework.init_state 0 ] ]
+
+let get_price_test (t : Framework.t) (expected_output : float) : test =
+  "Testing get_price" >:: fun _ -> assert_equal expected_output (get_price t)
+
+let get_price_tests = [ [ get_price_test Framework.init_state 0. ] ]
+
+let get_cup_sugar_count_test (t : Framework.t) (expected_output : float) : test
+    =
+  "Testing get_cup_sugar_count" >:: fun _ ->
+  assert_equal expected_output (get_cup_sugar_count t)
+
+let get_cup_sugar_count_tests =
+  [ [ get_sugar_count_test Framework.init_state 0. ] ]
+
+let get_cup_lemon_count_test (t : Framework.t) (expected_output : float) : test
+    =
+  "Testing get_cup_lemon_count" >:: fun _ ->
+  assert_equal expected_output (get_cup_lemon_count t)
+
+let get_cup_lemon_count_tests =
+  [ [ get_cup_lemon_count_test Framework.init_state 0. ] ]
+
+let get_cup_water_count_test (t : Framework.t) (expected_output : float) : test
+    =
+  "Testing get_cup_water_count" >:: fun _ ->
+  assert_equal expected_output (get_cup_water_count t)
+
+let get_cup_water_count_tests =
+  [ [ get_cup_water_count_test Framework.init_state 0. ] ]
+
+let framework_tests =
+  List.flatten
+    (List.flatten
+       [
+         List.map
+           (fun x -> List.flatten x)
+           [
+             get_wallet_tests;
+             get_days_left_tests;
+             get_lemon_count_tests;
+             get_cup_count_tests;
+             get_sugar_count_tests;
+             get_cup_sugar_count_tests;
+             get_cup_lemon_count_tests;
+             get_cup_water_count_tests;
+             get_price_tests;
+             buy_lemon_tests;
+             buy_cup_tests;
+             buy_sugar_tests;
+             add_sugar_tests;
+             add_lemons_tests;
+             add_water_tests;
+             add_cost_tests;
+             return_state_tests;
+             cup_ready_tests;
+             profit_tests;
+             test_set_tests;
+           ];
+       ])
 
 (*****************************************************************)
 (* Ingredients.ml *)
 (*****************************************************************)
-(* val purchase_option0 : options val purchase_option1 : options val
-   purchase_option2 : options val purchase_option3 : options val
-   get_lemon_total_cost : options -> float val get_cup_total_cost : options ->
-   float val get_sugar_total_cost : options -> float val get_lemon_amt : options
-   -> float val get_cup_amt : options -> int val get_sugar_amt : options ->
-   float val set_cup : float -> float -> float -> cup_contains *)
+
+let get_lemon_total_cost_test (option : Ingredients.options)
+    (expected_output : float) : test =
+  "Testing get_lemon_total_cost" >:: fun _ ->
+  assert_equal expected_output (get_lemon_total_cost option)
+
+let get_lemon_total_cost_tests =
+  [ [ get_lemon_total_cost_test Ingredients.purchase_option0 0. ] ]
+
+let get_sugar_total_cost_test (option : Ingredients.options)
+    (expected_output : float) : test =
+  "Testing get_sugar_total_cost" >:: fun _ ->
+  assert_equal expected_output (get_sugar_total_cost option)
+
+let get_sugar_total_cost_tests =
+  [ [ get_sugar_total_cost_test Ingredients.purchase_option0 0. ] ]
+
+let get_cup_total_cost_test (option : Ingredients.options)
+    (expected_output : float) : test =
+  "Testing get_cup_total_cost" >:: fun _ ->
+  assert_equal expected_output (get_cup_total_cost Ingredients.purchase_option0)
+
+let get_cup_total_cost_tests =
+  [ [ get_cup_total_cost_test Ingredients.purchase_option0 0. ] ]
+
+let get_lemon_amt_test (option : Ingredients.options) (expected_output : float)
+    : test =
+  "Testing get_lemon_amt" >:: fun _ ->
+  assert_equal expected_output (get_lemon_amt option)
+
+let get_lemon_amt_tests =
+  [ [ get_lemon_amt_test Ingredients.purchase_option0 0. ] ]
+
+let get_sugar_amt_test (option : Ingredients.options) (expected_output : float)
+    : test =
+  "Testing get_sugar_amt" >:: fun _ ->
+  assert_equal expected_output (get_sugar_amt option)
+
+let get_sugar_amt_tests =
+  [ [ get_sugar_amt_test Ingredients.purchase_option0 0. ] ]
+
+let get_cup_amt_test (option : Ingredients.options) (expected_output : int) :
+    test =
+  "Testing get_cup_amt" >:: fun _ ->
+  assert_equal expected_output (get_cup_amt Ingredients.purchase_option0)
+
+let get_cup_amt_tests = [ [ get_cup_amt_test Ingredients.purchase_option0 0 ] ]
+
+let ingredients_tests =
+  List.flatten
+    (List.flatten
+       [
+         List.map
+           (fun x -> List.flatten x)
+           [
+             get_lemon_total_cost_tests;
+             get_sugar_total_cost_tests;
+             get_cup_total_cost_tests;
+             get_lemon_amt_tests;
+             get_lemon_amt_tests;
+             get_lemon_amt_tests;
+           ];
+       ])
+
 (*****************************************************************)
 (* Input.ml *)
 (*****************************************************************)
@@ -185,5 +407,9 @@ let customer_tests =
 (*****************************************************************)
 (* Test Cases *)
 (*****************************************************************)
-let tests = "test suite" >::: List.flatten [ customer_tests; input_tests ]
+let tests =
+  "test suite"
+  >::: List.flatten
+         [ customer_tests; input_tests; ingredients_tests; framework_tests ]
+
 let _ = run_test_tt_main tests

@@ -46,6 +46,34 @@ let purchasing_state =
     price = 0.;
   }
 
+let adjusting_state =
+  {
+    state = Adjusting;
+    days_left = 10;
+    wallet = 30.0;
+    lemon_count = 30.;
+    cup_count = 60;
+    sugar_count = 30.;
+    cup_lemon = 0.;
+    cup_sugar = 0.;
+    cup_water = 0.;
+    price = 0.;
+  }
+
+let feedback_state =
+  {
+    state = Feedback;
+    days_left = 10;
+    wallet = 30.0;
+    lemon_count = 0.;
+    cup_count = 0;
+    sugar_count = 0.;
+    cup_lemon = 0.;
+    cup_sugar = 0.;
+    cup_water = 0.;
+    price = 0.;
+  }
+
 let get_wallet state = state.wallet
 let get_days_left state = state.days_left
 let get_lemon_count state = state.lemon_count
@@ -142,7 +170,7 @@ let add_cost state p =
 
 let add_water state count =
   {
-    state = Purchasing;
+    state = Adjusting;
     days_left = state.days_left;
     wallet = state.wallet;
     lemon_count = state.lemon_count;
@@ -167,8 +195,6 @@ let return_state state =
     cup_water = state.cup_water;
     price = 0.;
   }
-
-let compare_to_optimal ingr = 0
 
 let rec cup_sell state lemon sugar cup acc =
   if

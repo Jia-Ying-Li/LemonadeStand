@@ -20,6 +20,16 @@ val purchasing_state : t
     players are allowed to purchase their ingredients. The player can enter
     "end" to proceed to the next stage. *)
 
+val adjusting_state : t
+(** [adjusting_state] is the initial [Adjusting] stage of the game where players
+    are allowed to adjust their recipe. The player can enter "end" to proceed to
+    the next stage. *)
+
+val feedback_state : t
+(** [feedback_state] is the initial [Feedback] stage of the game where players
+    get feedback on their recipe. The player can enter "end" to proceed to the
+    next stage. *)
+
 val get_wallet : t -> float
 (** [get_wallet t] Returns the wallet of the player's current state. Requires:
     [t] is a valid state. *)
